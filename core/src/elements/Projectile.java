@@ -17,6 +17,7 @@ public class Projectile extends Entidad2D {
 	public Texture invPix;
 	float tempX;
 	float tempY;
+	public float dmg;
 
 	public Projectile(float x, float y, Hull hull, String texture, float speedMod) {
 		super(new Texture(texture));
@@ -34,11 +35,6 @@ public class Projectile extends Entidad2D {
 		createBody();
 		fixtureDef();
 
-	}
-
-	public void fired() {
-		doMovement();
-		draw(Render.batch);
 	}
 
 	void doMovement() {
@@ -66,27 +62,14 @@ public class Projectile extends Entidad2D {
 		CircleShape shape = new CircleShape();
 		shape.setRadius(getWidth() / 3);
 		fdef.filter.categoryBits = Config.PROJECTIL_BIT;
-		fdef.filter.maskBits = Config.TANK_BIT | Config.OBSTACLE_BIT | Config.EXPLOSION_BIT;
+		fdef.filter.maskBits = Config.TANK_BIT | Config.BARREL_BIT | Config.DEFAULT_BIT ;
 		fdef.shape = shape;
 		fdef.isSensor = true;
 		b2body.createFixture(fdef).setUserData(this);
 
 	}
 
-	public void gotHitted(Hull hitted) {
 
-		if (hitted != parent) {
-			explode = true;
-		}
-
-	}
-
-	@Override
-	public void disappear() {
-		Render.world.destroyBody(b2body);
-		b2body = null;
-
-	}
 
 	public boolean isExploded() {
 		return explode;

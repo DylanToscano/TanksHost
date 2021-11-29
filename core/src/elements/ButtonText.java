@@ -17,6 +17,7 @@ public class ButtonText {
 	private Color defaultColor;
 	private boolean hovered;
 	private boolean pressed;
+	
 
 	public ButtonText(String direction, int dimension, Color color, boolean shadow) {
 		defaultColor = color;
@@ -27,8 +28,8 @@ public class ButtonText {
 		parametros.color = color;
 		if (shadow) {
 			parametros.shadowColor = Color.BLACK;
-			parametros.shadowOffsetX = 3;
-			parametros.shadowOffsetY = 2;
+			parametros.shadowOffsetX = 0;
+			parametros.shadowOffsetY = 1;
 		}
 		layout = new GlyphLayout();
 		fuente = generador.generateFont(parametros);
@@ -108,6 +109,9 @@ public class ButtonText {
 	public boolean isPressed() {
 		return pressed;
 		
+	}
+	public void reset() {
+		pressed = false;
 	}
 	
 }

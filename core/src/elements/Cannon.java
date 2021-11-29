@@ -7,75 +7,73 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Timer;
 
+import TankData.BasicShell;
+import TankData.ExplosiveShell;
 import utilities.Config;
 import utilities.Render;
 import utilities.Resources;
 
 public class Cannon extends Attachable {
-
-	public boolean ready = true;
-	public int reloadTime = 2;
+	public float reloadTime = 2;
 	public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
-
 	Sprite fireFX;
 	public Sound fireSfx;
 	public float time;
 	public float fireEffectTime = 0.1f;
 
-	Timer timer = new Timer();
-
-	public Cannon(String idle, String fire) {
-		super(idle);
+	public Cannon(String route) {
+		super(route);
 		flip(false, true);
 		fireFX = new Sprite(new Texture(Resources.CANNON_FIRE_FX));
 		fireFX.flip(false, true);
-		fireFX.setSize(getWidth(),getHeight());
-		fireFX.setPosition(2*100,2*100);
-		ready = false;
+		fireFX.setSize(getWidth(), getHeight());
+		fireFX.setPosition(2 * 100, 2 * 100);
 		objectType = "Cannon";
-		
 	}
 
-	public void trigger() {
-		if (time > reloadTime) {
-			time = 0;
-			ready = true;
-//			fireSfx.play(1,Functions.randomFloat(0.8f,1.2f), 1);
-			Projectile shell = new Projectile(getX() + getWidth() / 2, getY() + getHeight() / 2, hull,
-					Resources.BASICSHELL, 3);
-			fireFX.setOrigin(fireFX.getWidth()/2, -hull.getHeight()/1.5f);
-			
-			
-			projectiles.add(shell);
-		}
-	}
 
-	public void updateCannon() {
+
+	public void update() {
 		time += Config.delta;
-
+		
 		for (int i = 0; i < projectiles.size(); i++) {
-			if(projectiles.get(i).isExploded()) {
-				
-				projectiles.get(i).disappear();
-				projectiles.remove(i);
+			if (!projectiles.get(i).isExploded()) {
+				projectiles.get(i).doMovement();
+			}
+		}
+
+	}
+	
+	public void trigger() {
+			Projectile shell;
+//			fireSfx.play(1,Functions.randomFloat(0.8f,1.2f), 1);
+			if(hull.isBuffExplosive()) {
+				shell = new ExplosiveShell(getX() + getWidth() / 2, getY() + getHeight() / 2, hull);
 			}else {
-				projectiles.get(i).fired();
+				shell = new BasicShell(getX() + getWidth() / 2, getY() + getHeight() / 2, hull);
 			}
 			
-
-		}
-		
+			Render.addSprite(shell);
+			fireFX.setOrigin(fireFX.getWidth() / 2, -hull.getHeight() / 1.5f);
+			projectiles.add(shell);
+			time = 0;
 
 	}
 
 	@Override
 	public void update(float x, float y, float rotation) {
 		super.update(x, y, rotation);
-		fireFX.setPosition(x, y+hull.getHeight()/1.5f);
+		fireFX.setPosition(x, y + hull.getHeight() / 1.5f);
 		fireFX.setRotation(rotation);
+		
 		if (time < fireEffectTime) {
+			Render.batch.begin();
 			fireFX.draw(Render.batch);
+			Render.batch.end();
 		}
+	}
+	public void buffFireRate(){
+		reloadTime = reloadTime/2;
 	}
 
 }

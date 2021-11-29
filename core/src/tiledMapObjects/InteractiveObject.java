@@ -1,4 +1,4 @@
-package tiledObjects;
+package tiledMapObjects;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
@@ -52,10 +52,6 @@ public abstract class InteractiveObject {
 		fixture.setUserData("default");
 		setFilter(Config.DEFAULT_BIT);
 	}
-	
-
-
-	public abstract void interaction();
 
 	public void setFilter(short filterBit) {
 		// se crea un filtro nuevo con el bit que le indique
@@ -65,6 +61,7 @@ public abstract class InteractiveObject {
 		// define a la fixture de cada layerInteractivo un filtro
 		fixture.setFilterData(filter);
 	}
+	//in case that we need to change the cell, ex: change the texture of the wall cause it gets destroyed
 	public TiledMapTileLayer.Cell getCell(){
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(index);		
 		return layer.getCell((int) (body.getPosition().x*Config.PPM/64),(int) (body.getPosition().y*Config.PPM/64));

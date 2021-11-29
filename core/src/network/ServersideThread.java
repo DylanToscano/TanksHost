@@ -5,7 +5,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.bws.tankshost.ServerConfig;
@@ -283,7 +282,7 @@ public class ServersideThread extends Thread {
 		Gdx.app.postRunnable(new Runnable() {
 			@Override
 			public void run() {
-				Tank tank = new Tank(player, idCounter);
+				Tank tank = new Tank(player);
 				idCounter++;
 				Render.tanks.add(tank);
 				broadcast(NetworkCodes.NEWTANK+getTankData(tank));

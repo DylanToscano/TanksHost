@@ -2,7 +2,6 @@ package com.bws.tankshost;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -13,11 +12,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import elements.Tank;
-import input.Client;
 import network.Serverside;
-import tiledObjects.World2D;
-import tiledObjects.WorldListener;
+import tiledMapObjects.World2D;
+import tiledMapObjects.WorldListener;
 import utilities.Config;
 import utilities.Render;
 import utilities.Resources;
@@ -90,7 +87,7 @@ public class ServerScreen implements Screen {
 		b2dr.render(world, camera.combined);
 		b.begin();
 		for (int i = 0; i < Render.tanks.size(); i++) {
-			Render.tanks.get(i).Render();
+			Render.tanks.get(i).update();
 		}
 		b.end();
 

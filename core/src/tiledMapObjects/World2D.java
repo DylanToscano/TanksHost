@@ -1,4 +1,4 @@
-package tiledObjects;
+package tiledMapObjects;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.CircleMapObject;
