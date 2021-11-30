@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import utilities.Config;
+import utilities.Functions;
 import utilities.Render;
 
 public abstract class Buff extends Entity2D {
@@ -14,10 +15,10 @@ public abstract class Buff extends Entity2D {
 		super(texture);
 		//random position between the center map
 		setSize(40/Config.PPM,40/Config.PPM);
-//		setPosition(Functions.randomFloat(10,50)*15/Config.PPM,Functions.randomFloat(10,50)*15/Config.PPM);
+		setPosition(Functions.randomFloat(10,50)*15/Config.PPM,Functions.randomFloat(10,50)*15/Config.PPM);
 		
-		setPosition(3F+Config.counter/2,3f);
-		Config.counter++;
+//		setPosition(3F+Config.counter/2,3f);
+//		Config.counter++;
 		this.world = Render.world;
 		createBody();
 		fixtureDef();
