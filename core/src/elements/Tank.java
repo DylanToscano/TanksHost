@@ -5,7 +5,7 @@ import TankData.BasicHull;
 import input.Client;
 import input.InputKeys;
 import utilities.Config;
-import utilities.Render;
+import utilities.ClientRender;
 
 public class Tank implements Updateable{
 	public Hull hull;
@@ -27,9 +27,9 @@ public class Tank implements Updateable{
 		this.hull = new BasicHull(this);
 		objects = new Attachable[hull.slots];
 		attach(new BasicCannon());
-		Render.updateList.add(this);
-		Render.tanks.add(this);
-		Render.addSprite(hull);
+		ClientRender.updateList.add(this);
+		ClientRender.tanks.add(this);
+		ClientRender.addSprite(hull);
 	}
 
 	public void update() {

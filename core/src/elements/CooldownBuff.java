@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import utilities.Config;
 import utilities.Functions;
-import utilities.Render;
+import utilities.ClientRender;
 import utilities.Resources;
 
 public class CooldownBuff extends Buff{

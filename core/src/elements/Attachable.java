@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import utilities.Config;
-import utilities.Render;
+import utilities.ClientRender;
 
 public abstract class Attachable extends ClientSprite implements Updateable {
 	
@@ -16,8 +16,8 @@ public abstract class Attachable extends ClientSprite implements Updateable {
 	public Attachable(String texture) {
 		super(new Texture(texture),texture);
 		centrarImagen();
-		Render.addUpdateable(this);
-		Render.addSprite(this);
+		ClientRender.addUpdateable(this);
+		ClientRender.addSprite(this);
 		
 	}
 	

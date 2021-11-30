@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import input.InputKeys;
 import utilities.Config;
-import utilities.Render;
+import utilities.ClientRender;
 
 public class Hull extends Entity2D {
 	public int id;
@@ -32,11 +32,11 @@ public class Hull extends Entity2D {
 		super(new Texture(texture),texture);
 		this.hp = hp;
 		this.hpTotal = hp;
-		this.world = Render.world;
+		this.world = ClientRender.world;
 		this.parent = parent;
 		setSize(getWidth() / 2 / Config.PPM, getHeight() / 2 / Config.PPM);
 		setOrigin(getWidth() / 2, getHeight() / 2);
-		switch (Render.tanks.size()) {
+		switch (ClientRender.tanks.size()) {
 		case 0:
 			setPosition(2 * 15 / Config.PPM, 2 * 15 / Config.PPM);
 			break;

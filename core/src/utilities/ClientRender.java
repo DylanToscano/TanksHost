@@ -18,7 +18,7 @@ import elements.Updateable;
 import network.ServerClient;
 import network.ServersideThread;
 
-public abstract class Render {
+public abstract class ClientRender {
 	public static SpriteBatch batch;
 	public static TanksHost app;
 	public static World world;
