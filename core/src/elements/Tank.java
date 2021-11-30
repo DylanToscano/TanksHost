@@ -92,7 +92,6 @@ public class Tank implements Updateable{
 
 	public void rotate(float degrees) {
 		hull.rotate(degrees);
-
 		hull.rotation += degrees;
 		if (hull.rotation >= 360) {
 			hull.rotation = 0;
@@ -139,7 +138,8 @@ public class Tank implements Updateable{
 //			}
 			if (objects[i] != null) {
 				objects[i].update(hull.getX() + hull.getWidth() / 2 - objects[i].getWidth() / 2,
-						hull.getY() + hull.getHeight() / 2, hull.getRotation());
+						hull.getY() + hull.getHeight() / 2, hull.rotation);
+				System.out.println(hull.rotation);
 				// TODO look a this, when added more attachables, cause its only tought to have
 				// 1 attachable
 
