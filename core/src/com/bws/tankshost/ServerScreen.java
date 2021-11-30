@@ -83,11 +83,8 @@ public class ServerScreen implements Screen {
 		renderer.render();
 		// loads box2dDebugLines hitboxes
 		b2dr.render(world, camera.combined);
-		b.begin();
-		for (int i = 0; i < Render.tanks.size(); i++) {
-			Render.tanks.get(i).update();
-		}
-		b.end();
+		Render.render();
+		Render.updateList();
 
 	}
 
