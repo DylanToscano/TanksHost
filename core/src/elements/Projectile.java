@@ -21,7 +21,7 @@ public class Projectile extends Entity2D {
 	public int id;
 
 	public Projectile(float x, float y, Hull hull, String texture, float speedMod) {
-		super(new Texture(texture));
+		super(new Texture(texture),texture);
 		parent = hull;
 		this.world = Render.world;
 		this.speedMod = speedMod;

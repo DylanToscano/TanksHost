@@ -20,8 +20,8 @@ public abstract class Entity2D extends ClientSprite{
 	protected abstract void createBody();
 	protected abstract void fixtureDef();
 	
-	public Entity2D(Texture texture) {
-		super(texture);
+	public Entity2D(Texture texture, String textureRoute) {
+		super(texture,textureRoute);
 	}
 	public Entity2D() {
 		super();

@@ -7,7 +7,7 @@ import utilities.Resources;
 public class SpeedBuff extends Buff {
 
 	public SpeedBuff() {
-		super(new Texture(Resources.SPEEDBUFF));
+		super(new Texture(Resources.SPEEDBUFF),Resources.SPEEDBUFF);
 		b2body.setUserData("speed");
 	}
 

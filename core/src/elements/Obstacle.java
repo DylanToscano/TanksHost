@@ -16,7 +16,7 @@ public class Obstacle extends Entity2D {
 
 	public int corrections;
 	public Obstacle() {
-		super(new Texture(Resources.BARRICADE));
+		super(new Texture(Resources.BARRICADE),Resources.BARRICADE);
 		this.world = Render.world;
 		setSize(getTexture().getWidth()/2/Config.PPM,getTexture().getHeight()/2/Config.PPM);
 //		setPosition(Functions.randomFloat(10,50)*15/Config.PPM,Functions.randomFloat(10,50)*15/Config.PPM);

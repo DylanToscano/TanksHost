@@ -14,7 +14,7 @@ public abstract class Attachable extends ClientSprite implements Updateable {
 	
 	
 	public Attachable(String texture) {
-		super(new Texture(texture));
+		super(new Texture(texture),texture);
 		centrarImagen();
 		Render.addUpdateable(this);
 		Render.addSprite(this);

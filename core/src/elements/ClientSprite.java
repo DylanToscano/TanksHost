@@ -6,9 +6,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class ClientSprite extends Sprite {
 	//Yes. We made an entire class just to add an int, because Marconi.
 	int id;
+	String textureRoute;
 	
-	public ClientSprite(Texture texture) {
+	public ClientSprite(Texture texture,String textureRoute) {
 		super(texture);
+		this.textureRoute = textureRoute;
+		
 	}
 	public ClientSprite() {
 		

@@ -29,7 +29,7 @@ public class Hull extends Entity2D {
 	public int slots;
 
 	public Hull(Tank parent, String texture, int hp) {
-		super(new Texture(texture));
+		super(new Texture(texture),texture);
 		this.hp = hp;
 		this.hpTotal = hp;
 		this.world = Render.world;

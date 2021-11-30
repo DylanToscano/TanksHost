@@ -12,8 +12,8 @@ import utilities.Render;
 public abstract class Buff extends Entity2D {
 	private boolean picked;
 	public int id;
-	public Buff(Texture texture) {
-		super(texture);
+	public Buff(Texture texture, String textureRoute) {
+		super(texture,textureRoute);
 		//random position between the center map
 		setSize(40/Config.PPM,40/Config.PPM);
 		setPosition(Functions.randomFloat(10,50)*15/Config.PPM,Functions.randomFloat(10,50)*15/Config.PPM);
