@@ -78,8 +78,9 @@ public class ServersideThread extends Thread {
 
 	public void serverTick() {
 		checkTimeout();
-		ping();
 		syncSpriteData();
+		ping();
+		//syncSpriteData();
 		serverTick++;
 	}
 
@@ -134,7 +135,7 @@ public class ServersideThread extends Thread {
 			sendMessage(NetworkCodes.FORBIDDEN + "Not connected to server.", packet.getAddress(), packet.getPort());
 			return;
 		}
-		if (!networkCode.equals(NetworkCodes.PONG)) {
+		if (!networkCode.equals(NetworkCodes.PONG) && !networkCode.equals(NetworkCodes.RENDERSYNC)) {
 			System.out.println("[SERVER RECEIVED]" + msg);
 		}
 
@@ -153,6 +154,10 @@ public class ServersideThread extends Thread {
 		///
 		case NetworkCodes.PONG:
 
+			break;
+		///
+		case NetworkCodes.RENDERSYNC:
+			
 			break;
 		///
 		default:
@@ -197,7 +202,7 @@ public class ServersideThread extends Thread {
 
 	public int getClientID(InetAddress ip) {
 		for (int i = 0; i < clients.length; i++) {
-			if (clients[i].IP == ip) {
+			if (clients[i] != null && clients[i].IP == ip) {
 				return i;
 			}
 		}
