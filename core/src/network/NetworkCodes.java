@@ -17,11 +17,11 @@ public abstract class NetworkCodes {
 	public static final String ERROR = "ERROR-";
 	public static final String PING = "PIING-";
 	public static final String PONG = "CPOONG-";
-	public static final String TANKSYNC = "TSYNC-"; //TankSync. The format is TSYNC-PosX/PosY/Rotation
 	public static final String NEWSPRITE   = "SPRITE-";
-	public static final String REMOVESPRITE  = "NORITE-"; //Cuack.
+	public static final String UPDATESPRITE = "UPRITE-";
+	public static final String REMOVESPRITE  = "NORITE-"; 
 	public static final String EXPLOSION = "BOOOM-";
-	
+	public static final String RENDERSYNC  ="RSYNC-";
 
 
 }

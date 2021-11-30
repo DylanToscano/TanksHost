@@ -12,6 +12,7 @@ import com.bws.tankshost.ServerConfig;
 import elements.ClientSprite;
 import elements.Tank;
 import input.InputKeys;
+import utilities.Render;
 
 public class ServersideThread extends Thread {
 
@@ -84,6 +85,7 @@ public class ServersideThread extends Thread {
 			}
 		}
 		// Check if clients should be pinged.
+		//TODO: Ping must send render list length, HP, reload time.
 		if (serverTick - lastPing >= ServerConfig.PING_RATE) {// If there's been enough ticks between last ping.
 			broadcast(NetworkCodes.PING);
 		}
@@ -287,22 +289,29 @@ public class ServersideThread extends Thread {
 	}
 	
 	private String getSpriteData(ClientSprite sprite) {
-		//String spriteData = 
+		return sprite.getRoute()+"/"+sprite.getID()+"/"+sprite.getX()+"/"+sprite.getY()+"/"+sprite.getRotation()+"/"+sprite.getWidth()+"/"+sprite.getHeight();
 	}
 	
 	public void addSprite(ClientSprite sprite) {
 		broadcast(NetworkCodes.NEWSPRITE+getSpriteData(sprite) );
 	}
 	
-	public void removeSprite(Sprite sprite) {
-		
+	public void removeSprite(ClientSprite sprite) {
+		broadcast(NetworkCodes.REMOVESPRITE+sprite.getID());
 	}
 
 	private void syncSpriteData() {
-		
+		for (int i = 0; i < Render.renderList.size(); i++) {
+			ClientSprite sprite = Render.renderList.get(i);
+			broadcast(NetworkCodes.UPDATESPRITE+getSpriteData(sprite));
+		}
 	}
 	
-	private void syncRenderList() {
+	private void syncRenderList(ServerClient client) {//For when a player's renderList is desynced.
+		for (int i = 0; i < Render.renderList.size(); i++) {
+			ClientSprite sprite = Render.renderList.get(i);
+			sendMessage(NetworkCodes.NEWSPRITE+getSpriteData(sprite),client.IP,client.port);
+		}
 		
 	}
 

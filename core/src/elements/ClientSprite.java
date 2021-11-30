@@ -23,6 +23,9 @@ public class ClientSprite extends Sprite {
 	public int getID() {
 		return id;
 	}
+	public String getRoute() {
+		return textureRoute;
+	}
 	
 	
 }

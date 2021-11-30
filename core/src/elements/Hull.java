@@ -157,7 +157,7 @@ public class Hull extends Entity2D {
 	public void receiveExplosiveDamage(float dmg) {
 		hp -= dmg;
 		hp = (hp < 0) ? 0 : hp;
-		System.out.println("hp despueps de expl: " + hp);
+		
 	}
 
 	public void receiveDamage(Projectile p) {
