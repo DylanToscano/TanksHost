@@ -9,6 +9,7 @@ import java.net.SocketException;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bws.tankshost.ServerConfig;
 
+import elements.ClientSprite;
 import elements.Tank;
 import input.InputKeys;
 
@@ -285,12 +286,12 @@ public class ServersideThread extends Thread {
 		return spriteIDCounter;
 	}
 	
-	private String getSpriteData(Tank tank) {
-		return "";
+	private String getSpriteData(ClientSprite sprite) {
+		//String spriteData = 
 	}
 	
-	public void addSprite(Sprite sprite) {
-		
+	public void addSprite(ClientSprite sprite) {
+		broadcast(NetworkCodes.NEWSPRITE+getSpriteData(sprite) );
 	}
 	
 	public void removeSprite(Sprite sprite) {

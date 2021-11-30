@@ -98,6 +98,7 @@ public abstract class Render {
 	}
 	
 	public static void addSprite(ClientSprite sprite) {
+		sprite.setID(serversideThread.generateSpriteID());
 		renderList.add(sprite);
 		serversideThread.addSprite(sprite);
 	}
