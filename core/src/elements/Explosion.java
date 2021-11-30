@@ -25,7 +25,6 @@ public class Explosion extends Entity2D implements Updateable{
 	private float framesSize = 5;
 	public Explosion(float x,float y) { 
 		world = Render.world;
-		
 		setPosition(x,y);
 		setAnimation();
 		setRegion(new Texture(Resources.EXPLOSION+1+".png"));
@@ -34,6 +33,8 @@ public class Explosion extends Entity2D implements Updateable{
 		Render.addUpdateable(this);
 		Render.addSprite(this);
 		counter = 0;
+		
+		Render.getServerThread().doExplosion(x, y);
 	}
 	
 	public void update() {

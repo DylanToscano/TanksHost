@@ -76,7 +76,13 @@ public class ServersideThread extends Thread {
 	}
 
 	public void serverTick() {
-		// Check that all clients have been responsive.
+		checkTimeout();
+		ping();
+		syncSpriteData();
+		serverTick++;
+	}
+	
+	private void checkTimeout() {
 		ServerClient[] connectedClients = getConnectedClients();
 		for (int i = 0; i < connectedClients.length; i++) {
 			int tickDifference = (int) (serverTick - connectedClients[i].lastTick);
@@ -84,16 +90,12 @@ public class ServersideThread extends Thread {
 				disconnectClient(i);
 			}
 		}
-		// Check if clients should be pinged.
-		//TODO: Ping must send render list length, HP, reload time.
+	}
+	
+	private void ping() {
 		if (serverTick - lastPing >= ServerConfig.PING_RATE) {// If there's been enough ticks between last ping.
-			broadcast(NetworkCodes.PING);
+			broadcast(NetworkCodes.PING+Render.renderList.size());
 		}
-		// Sync tanks with server.
-		syncSpriteData();
-
-		// Finish server tick
-		serverTick++;
 	}
 
 	@Override
@@ -313,6 +315,10 @@ public class ServersideThread extends Thread {
 			sendMessage(NetworkCodes.NEWSPRITE+getSpriteData(sprite),client.IP,client.port);
 		}
 		
+	}
+	
+	public void doExplosion(float x,float y) {
+		broadcast(NetworkCodes.EXPLOSION+x+"/"+y);
 	}
 
 }

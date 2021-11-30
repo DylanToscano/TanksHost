@@ -106,6 +106,10 @@ public abstract class Render {
 	public static void setServerThread(ServersideThread thread) {
 		serversideThread = thread;
 	}
+	
+	public static ServersideThread getServerThread() {
+		return serversideThread;
+	}
 
 	public static void addUpdateable(Updateable update) {
 		updateList.add(update);
