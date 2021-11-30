@@ -281,40 +281,20 @@ public class ServersideThread extends Thread {
 
 /////////////////TANK MANAGER
 
-	private String getTankData(Tank tank) {
+	private String getSpriteData(Tank tank) {
 		return (tank.id + "/" + tank.hull.getX() + "/" + tank.hull.getY()
 				+ "/" + tank.hull.rotation);
 	}
-
-	private void createPlayerTank(final ServerClient player) {
-		Gdx.app.postRunnable(new Runnable() {
-			@Override
-			public void run() {
-				Tank tank = new Tank(player);
-				idCounter++;
-				Render.tanks.add(tank);
-				broadcast(NetworkCodes.NEWOBJECT+"tank/" + getTankData(tank));
-			}
-		});
+	
+	private void createSprite() {
+		
+	}
+	
+	private void removeSprite() {
+		
 	}
 
-	private void removePlayerTank(final ServerClient player) {
-		Gdx.app.postRunnable(new Runnable() {
-			@Override
-			public void run() {
-				for (int i = 0; i < Render.tanks.size(); i++) {
-					if (Render.tanks.get(i).owner == player) {
-						broadcast(NetworkCodes.NEWOBJECT+"tank/"+getTankData(Render.tanks.get(i)));
-						Render.tanks.get(i).hull.disappear();
-						Render.tanks.remove(i);
-						break;
-					}
-				}
-			}
-		});
-	}
-
-	private void syncPlayerTanks() {
+	private void syncSpriteData() {
 		if (Render.tanks.size() == 0) {
 			return;
 		}
