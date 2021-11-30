@@ -16,6 +16,7 @@ public class ServersideThread extends Thread {
 
 	private long serverTick;
 	private long lastPing;
+	public int spriteIDCounter;
 	ServerTickThread tickThread;
 	int idCounter = 0; // Tank ID Counter
 	private DatagramSocket socket;
@@ -24,6 +25,7 @@ public class ServersideThread extends Thread {
 
 	private int connectedClientCounter = 0;
 	private ServerClient[] clients = new ServerClient[ServerConfig.MAX_CLIENTS];
+	
 
 	public ServersideThread() {
 		serverCreated = startServer();
@@ -33,6 +35,7 @@ public class ServersideThread extends Thread {
 		try {
 			socket = new DatagramSocket(socketPort);
 			System.out.println("[SERVER] Socket established on port: " + socketPort);
+			spriteIDCounter = 0;
 			serverCreated = true;
 			return true; // server created.
 		} catch (SocketException e) {
@@ -84,7 +87,7 @@ public class ServersideThread extends Thread {
 			broadcast(NetworkCodes.PING);
 		}
 		// Sync tanks with server.
-		syncPlayerTanks();
+		syncSpriteData();
 
 		// Finish server tick
 		serverTick++;
@@ -275,11 +278,15 @@ public class ServersideThread extends Thread {
 				Boolean.parseBoolean(args[1]));
 	}
 
-/////////////////TANK MANAGER
-
+/////////////////SPRITE MANAGER
+	
+	public int generateSpriteID() {
+		spriteIDCounter++;
+		return spriteIDCounter;
+	}
+	
 	private String getSpriteData(Tank tank) {
-		return (tank.id + "/" + tank.hull.getX() + "/" + tank.hull.getY()
-				+ "/" + tank.hull.rotation);
+		return "";
 	}
 	
 	public void addSprite(Sprite sprite) {
@@ -291,7 +298,11 @@ public class ServersideThread extends Thread {
 	}
 
 	private void syncSpriteData() {
-
+		
+	}
+	
+	private void syncRenderList() {
+		
 	}
 
 }
