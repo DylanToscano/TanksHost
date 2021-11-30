@@ -15,6 +15,7 @@ import elements.Explosion;
 import elements.Projectile;
 import elements.Tank;
 import elements.Updateable;
+import network.ServersideThread;
 
 
 public abstract class Render {
@@ -24,6 +25,7 @@ public abstract class Render {
 	public static ArrayList<Tank> tanks = new ArrayList<Tank>();
 	public static ArrayList<Sprite> renderList = new ArrayList<Sprite>();
 	public static ArrayList<Updateable> updateList = new ArrayList<Updateable>();
+	static ServersideThread serversideThread;
 	
 	int renderID;
 
@@ -97,9 +99,13 @@ public abstract class Render {
 	
 	public static void addSprite(Sprite sprite) {
 		renderList.add(sprite);
+		serversideThread.addSprite(sprite);
 	}
 	public static void addUpdateable(Updateable update) {
 		updateList.add(update);
 	}
 	
+	public static void setServerThread(ServersideThread thread) {
+		serversideThread = thread;
+	}
 }

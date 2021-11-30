@@ -6,13 +6,11 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bws.tankshost.ServerConfig;
 
 import elements.Tank;
-import input.Client;
 import input.InputKeys;
-import utilities.Render;
 
 public class ServersideThread extends Thread {
 
@@ -214,7 +212,6 @@ public class ServersideThread extends Thread {
 				newClient.username = username;
 				clients[i] = newClient;
 				connectedClientCounter++;
-				createPlayerTank(newClient); // TODO: Make sure tank only spawns during rounds?
 				return newClient;
 			}
 		}
@@ -224,7 +221,6 @@ public class ServersideThread extends Thread {
 
 	public void removeClient(int id) {
 		// TODO: Consider some kind of dispose() ?
-		removePlayerTank(clients[id]);
 		clients[id] = null;
 		connectedClientCounter--;
 
@@ -286,28 +282,16 @@ public class ServersideThread extends Thread {
 				+ "/" + tank.hull.rotation);
 	}
 	
-	private void createSprite() {
+	public void addSprite(Sprite sprite) {
 		
 	}
 	
-	private void removeSprite() {
+	public void removeSprite(Sprite sprite) {
 		
 	}
 
 	private void syncSpriteData() {
-		if (Render.tanks.size() == 0) {
-			return;
-		}
-		for (int i = 0; i < Render.tanks.size(); i++) {
-			Tank tank = Render.tanks.get(i);
-			broadcast(NetworkCodes.TANKSYNC + getTankData(tank));
-		}
-	}
-	
-//////////OBJECT MANAGER
-	
-	private void createNewObject() {
-		
+
 	}
 
 }
