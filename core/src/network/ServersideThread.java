@@ -278,7 +278,7 @@ public class ServersideThread extends Thread {
 
 	private void handleUserInput(DatagramPacket packet, String packagedArgs) { // packaged args is the string with
 																				// multiple arguments divided with /
-		String[] args = packagedArgs.split("/");
+		String[] args = packagedArgs.split("-");
 		ServerClient requestingClient = clients[getClientID(packet.getAddress())];
 		// Below: Modify the user input keys according to the network message. (huh?)
 		requestingClient.inputs.replace(InputKeys.valueOf(args[0]), !Boolean.parseBoolean(args[1]),
@@ -293,8 +293,8 @@ public class ServersideThread extends Thread {
 	}
 
 	private String getSpriteData(ClientSprite sprite) {
-		return sprite.getRoute() + "/" + sprite.getID() + "/" + sprite.getX() + "/" + sprite.getY() + "/"
-				+ sprite.getRotation() + "/" + sprite.getWidth() + "/" + sprite.getHeight();
+		return sprite.getRoute() + "-" + sprite.getID() + "-" + sprite.getX() + "-" + sprite.getY() + "-"
+				+ sprite.getRotation() + "-" + sprite.getWidth() + "-" + sprite.getHeight();
 	}
 
 	public void addSprite(ClientSprite sprite) {
@@ -321,7 +321,7 @@ public class ServersideThread extends Thread {
 	}
 
 	public void doExplosion(float x, float y) {
-		broadcast(NetworkCodes.EXPLOSION + x + "/" + y);
+		broadcast(NetworkCodes.EXPLOSION + x + "-" + y);
 	}
 
 //////TANK MANAGEMENT

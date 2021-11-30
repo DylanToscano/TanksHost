@@ -123,8 +123,13 @@ public abstract class Render {
 		serversideThread.addSprite(sprite);
 	}
 
-	public static void removeSprite() {
-
+	public static void removeSprite(int ID) {
+		for (int i = 0; i < renderList.size(); i++) {
+			if (renderList.get(i).getID() == ID) {
+				renderList.get(i).remove();
+				break;
+			}
+		}
 	}
 
 }

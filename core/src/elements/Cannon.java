@@ -66,8 +66,9 @@ public class Cannon extends Attachable {
 		fireFX.setPosition(x, y + hull.getHeight() / 1.5f);
 		fireFX.setRotation(rotation);
 		
-		if (time < fireEffectTime) {
-			fireFX.draw(Render.batch);
+		if (time > fireEffectTime) {
+			Render.removeSprite(fireFX.getID()); //Yes, we can remove it directly with fireFX.remove();. No, we won't.
+			
 		}
 	}
 	public void buffFireRate(){
