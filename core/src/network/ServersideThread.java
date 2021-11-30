@@ -282,7 +282,7 @@ public class ServersideThread extends Thread {
 /////////////////TANK MANAGER
 
 	private String getTankData(Tank tank) {
-		return (tank.owner.username + "/" + tank.hull.b2body.getPosition().x + "/" + tank.hull.b2body.getPosition().y
+		return (tank.id + "/" + tank.hull.getX() + "/" + tank.hull.getY()
 				+ "/" + tank.hull.rotation);
 	}
 
