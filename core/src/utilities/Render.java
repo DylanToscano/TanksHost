@@ -27,8 +27,6 @@ public abstract class Render {
 	public static ArrayList<ClientSprite> renderList = new ArrayList<ClientSprite>();
 	public static ArrayList<Updateable> updateList = new ArrayList<Updateable>();
 	static ServersideThread serversideThread;
-	
-	int renderID;
 
 	public static void render(){ //Render everything in the renderList
 		batch.begin();
