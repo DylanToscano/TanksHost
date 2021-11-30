@@ -11,7 +11,8 @@ import utilities.Render;
 import utilities.Resources;
 
 public class BarrelEx extends Entity2D{
-	public boolean hitted;
+	public boolean hit;
+	public int id;
 	public BarrelEx() {
 		super(new Texture(Resources.BARREL));
 		this.world = Render.world;
@@ -42,7 +43,7 @@ public class BarrelEx extends Entity2D{
 
 	}
 	public void Hitted() {
-		hitted = true;
+		hit = true;
 		Explosion explosion = new Explosion(getX(), getY());
 		Render.addSprite(explosion);
 	}
