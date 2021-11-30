@@ -7,39 +7,34 @@ import input.InputKeys;
 import utilities.Config;
 import utilities.Render;
 
-public class Tank {
+public class Tank implements Updateable{
 	public Hull hull;
 	public Client owner;
-	public float rotation;
-	float maxSpeed;
-	float rotationSpeed;
-	float accelRate;
-	float speed;
-	float acceleration;
 	boolean forward; // direction. true if going forward, false if reverse.
 	float time;
+	public float tempX = 0;
+	public float tempY = 0;
+	public float correctionX,correctionY;
+	
+	public boolean correction;
 	// Array holding other elements of the tank, such as the cannon.
 	Attachable[] objects;
 
-	public Tank(Client player, int id) {
+	public Tank(Client player) {
 		// TODO SETEAR LA POSICION DESDE ACA
 		owner = player;
-		this.hull = new BasicHull();
-		rotationSpeed = 1;
-
+		this.hull = new BasicHull(this);
 		objects = new Attachable[hull.slots];
-		System.out.println(hull.slots);
 		attach(new BasicCannon());
-
+		Render.updateList.add(this);
+		Render.tanks.add(this);
+		Render.addSprite(hull);
 	}
 
-	public void Render() {
+	public void update() {
 		time += Config.delta;
 		doMovement();
 		doCannon();
-
-		hull.draw(Render.batch); // this is the original way to draw the tank.
-
 		updateObjects();// Update other sprites attached to this tank, such as cannon.
 		// System.out.println("ACCEL: "+acceleration+" | SPEED: "+speed);
 	}
@@ -47,45 +42,50 @@ public class Tank {
 	public void setPosition(float x, float y) {
 		hull.setPosition(x, y);
 	}
-	
+
 	public void setRotation(float rotation) {
-		this.rotation = rotation;
+		hull.rotation = rotation;
+		hull.setRotation(rotation);
 	}
 
 	//// movement functions
 	private void doMovement() {
 		doRotation();
 
-		float tempX = (float) Math.sin(Math.toRadians(hull.rotation));
-		float tempY = (float) Math.cos(Math.toRadians(hull.rotation));
+		tempX = (float) Math.sin(Math.toRadians(hull.rotation));
+		tempY = (float) Math.cos(Math.toRadians(hull.rotation));
+		if (hull.roadCounter == 0) {
+			tempX = tempX / 2;
+			tempY = tempY / 2;
+		}
+		if (hull.isBuffSpeed()) {
+			tempX = tempX * 1.4f;
+			tempY = tempY * 1.4f;
+		}
 
+//		hull.
 		if (owner.inputs.get(InputKeys.UP) && !owner.inputs.get(InputKeys.DOWN)) { // If pressing W, go forward.
 
-			tempX = (hull.isOnRoad() == true) ? tempX : tempX / 2;// here controls on road speed
-			tempY = (hull.isOnRoad() == true) ? tempY : tempY / 2;//
 			hull.moveHull(-tempX, tempY);
 		} else if (owner.inputs.get(InputKeys.DOWN) && !owner.inputs.get(InputKeys.UP)) { // If pressing S, go reverse
-
-			tempX = (hull.isOnRoad() == true) ? tempX / 1.5f : tempX / 3;// here controls on road speed
-			tempY = (hull.isOnRoad() == true) ? tempY / 1.5f : tempY / 3;//
-			hull.moveHull(tempX, -tempY);
+			hull.moveHull(tempX / 1.5f, -tempY / 1.5f);
 		} else {
 			hull.stopHull();
 		}
 
-		setPosition((hull.b2body.getPosition().x - hull.getWidth() / 2), // before this, doMovement only sets the body2d
-																			// (rectangle)
-				hull.b2body.getPosition().y - hull.getHeight() / 2); // and here updates the sprite
+		setPosition((hull.b2body.getPosition().x - hull.getWidth() / 2), // before this, doMovement only sets the
+				hull.b2body.getPosition().y - hull.getHeight() / 2); // body2d(the rectangle) and here updates the
+																		// sprite
 
 	}
 
 	private void doRotation() {
 		if (owner.inputs.get(InputKeys.RIGHT)) {
-			rotate(rotationSpeed * -1);
+			rotate(hull.rotationSpeed * -1);
 		}
 
 		if (owner.inputs.get(InputKeys.LEFT)) {
-			rotate(rotationSpeed);
+			rotate(hull.rotationSpeed);
 		}
 	}
 
@@ -103,21 +103,20 @@ public class Tank {
 	///////////// Cannon-related functions.
 
 	private void doCannon() {
-		for (int i = 0; i < objects.length; i++) {
-			if (objects[i].objectType == "Cannon") {
-				if (owner.inputs.get(InputKeys.FIRE) && time >((Cannon) objects[i]).reloadTime ) { //failsafe from spamming space
-					time = 0;
-					((Cannon) objects[i]).trigger(); // omg
+		if (owner.inputs.get(InputKeys.FIRE)) {
+			for (int i = 0; i < objects.length; i++) {
+				if (objects[i].objectType == "Cannon") {// failsafe from
+					if (time > ((Cannon) objects[i]).reloadTime) {// spamming space
+						time = 0;
+						((Cannon) objects[i]).trigger(); // omg
+					}
 				}
-
 			}
-
 		}
 	}
 
 	///////////// functions related to attached objects
 	public void attach(Attachable object) {
-
 		int availablePos = -1;
 		for (int i = 0; i < objects.length; i++) { // Find an available position in the array.
 			if (availablePos == -1 && objects[i] == null) {
@@ -134,21 +133,29 @@ public class Tank {
 	void updateObjects() { // Fix attached objects position & rotation
 		//
 		for (int i = 0; i < objects.length; i++) {
-			if (objects[i].objectType.equals("Cannon")) { // updates cannon a its respective projectiles
-				((Cannon) objects[i]).updateCannon();
-			}
+//			if (objects[i].objectType.equals("Cannon")) { // updates cannon a its respective projectiles
+//				((Cannon) objects[i]).update();
+//			}
 			if (objects[i] != null) {
 				objects[i].update(hull.getX() + hull.getWidth() / 2 - objects[i].getWidth() / 2,
 						hull.getY() + hull.getHeight() / 2, hull.getRotation());
-				// TODO SETEAR BIEN ESTO, EL WITDH LE SUMO LA MITAD DEL OBJETO PARA ESTAR EN EL
-				// CENTRO, PERO SI HAY MAS ATTACHABLES
-				// NO DEBERIA SER ASI
+				// TODO look a this, when added more attachables, cause its only tought to have
+				// 1 attachable
+
 			}
 
 		}
 
 	}
 
+	public void destroy() {
+		hull.disappear();
 
+	}
+
+	public void correction(float x, float y) {
+		correctionX = x;
+		correctionY = y;
+	}
 
 }

@@ -11,9 +11,11 @@ public abstract class Config {
     public static final short DEFAULT_BIT = 1;
     public static final short TANK_BIT = 2;
     public static final short ROAD_BIT = 4;
-    public static final short OBSTACLE_BIT = 8;
-    public static final short TNKSENSOR_BIT = 16;
-    public static final short PROJECTIL_BIT = 32;
-    public static final short EXPLOSION_BIT = 64;
+    public static final short BUFF_BIT = 8;
+    public static final short PROJECTIL_BIT = 16;
+    public static final short EXPLOSION_BIT = 32;
+    public static final short BARREL_BIT = 64;
+
+   
     // 0000 1100
 }

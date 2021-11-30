@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
+import utilities.Render;
+
 public abstract class Entidad2D extends Sprite{
 	// box2D
 	protected FixtureDef fdef;
@@ -17,8 +19,15 @@ public abstract class Entidad2D extends Sprite{
 	protected Fixture fixture;
 	protected abstract void createBody();
 	protected abstract void fixtureDef();
-	protected abstract void disappear();
+	
 	public Entidad2D(Texture texture) {
 		super(texture);
+	}
+	public Entidad2D() {
+		super();
+	}
+	public void disappear() {
+		Render.world.destroyBody(b2body);
+		b2body = null;
 	}
 }
