@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import utilities.Config;
 import utilities.Render;
 
-public abstract class Attachable extends Sprite implements Updateable {
+public abstract class Attachable extends ClientSprite implements Updateable {
 	
 
 	Hull hull;
