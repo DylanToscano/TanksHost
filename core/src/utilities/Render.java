@@ -11,6 +11,7 @@ import com.bws.tankshost.TanksHost;
 
 import elements.BarrelEx;
 import elements.Buff;
+import elements.ClientSprite;
 import elements.Explosion;
 import elements.Projectile;
 import elements.Tank;
@@ -23,11 +24,9 @@ public abstract class Render {
 	public static TanksHost app;
 	public static World world;
 	public static ArrayList<Tank> tanks = new ArrayList<Tank>();
-	public static ArrayList<Sprite> renderList = new ArrayList<Sprite>();
+	public static ArrayList<ClientSprite> renderList = new ArrayList<ClientSprite>();
 	public static ArrayList<Updateable> updateList = new ArrayList<Updateable>();
 	static ServersideThread serversideThread;
-	
-	int renderID;
 
 	public static void render(){ //Render everything in the renderList
 		Render.batch.begin();
@@ -97,7 +96,7 @@ public abstract class Render {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	}
 	
-	public static void addSprite(Sprite sprite) {
+	public static void addSprite(ClientSprite sprite) {
 		renderList.add(sprite);
 		serversideThread.addSprite(sprite);
 	}
