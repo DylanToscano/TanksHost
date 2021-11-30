@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-import utilities.ClientRender;
+import utilities.Render;
 
 public abstract class Entity2D extends ClientSprite{
 	// box2D
@@ -27,7 +27,7 @@ public abstract class Entity2D extends ClientSprite{
 		super();
 	}
 	public void disappear() {
-		ClientRender.world.destroyBody(b2body);
+		Render.world.destroyBody(b2body);
 		b2body = null;
 	}
 }

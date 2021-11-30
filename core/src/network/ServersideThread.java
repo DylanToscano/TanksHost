@@ -12,7 +12,7 @@ import com.bws.tankshost.ServerConfig;
 import elements.ClientSprite;
 import elements.Tank;
 import input.InputKeys;
-import utilities.ClientRender;
+import utilities.Render;
 
 public class ServersideThread extends Thread {
 
@@ -301,15 +301,15 @@ public class ServersideThread extends Thread {
 	}
 
 	private void syncSpriteData() {
-		for (int i = 0; i < ClientRender.renderList.size(); i++) {
-			ClientSprite sprite = ClientRender.renderList.get(i);
+		for (int i = 0; i < Render.renderList.size(); i++) {
+			ClientSprite sprite = Render.renderList.get(i);
 			broadcast(NetworkCodes.UPDATESPRITE+getSpriteData(sprite));
 		}
 	}
 	
 	private void syncRenderList(ServerClient client) {//For when a player's renderList is desynced.
-		for (int i = 0; i < ClientRender.renderList.size(); i++) {
-			ClientSprite sprite = ClientRender.renderList.get(i);
+		for (int i = 0; i < Render.renderList.size(); i++) {
+			ClientSprite sprite = Render.renderList.get(i);
 			sendMessage(NetworkCodes.NEWSPRITE+getSpriteData(sprite),client.IP,client.port);
 		}
 		

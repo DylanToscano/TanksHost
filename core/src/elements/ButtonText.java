@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
-import utilities.ClientRender;
+import utilities.Render;
 
 public class ButtonText {
 	private BitmapFont fuente;
@@ -37,7 +37,7 @@ public class ButtonText {
 	}
 
 	public void draw() {
-		fuente.draw(ClientRender.batch, texto, x, y);
+		fuente.draw(Render.batch, texto, x, y);
 	}
 	public void update(float x, float y) {
 		if(inCoords(x,y)) {

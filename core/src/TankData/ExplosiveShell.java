@@ -3,7 +3,7 @@ package TankData;
 import elements.Explosion;
 import elements.Hull;
 import elements.Projectile;
-import utilities.ClientRender;
+import utilities.Render;
 import utilities.Resources;
 
 public class ExplosiveShell extends Projectile{
@@ -22,7 +22,7 @@ public class ExplosiveShell extends Projectile{
 	public void explode() {
 		super.explode();
 		Explosion explosion = new Explosion(getX(),getY());
-		ClientRender.addSprite(explosion);
+		Render.addSprite(explosion);
 	}
 	
 }

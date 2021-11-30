@@ -47,7 +47,7 @@ public class Text {
 
 	public void dibujar() {
 
-		fuente.draw(ClientRender.batch, texto, x, y);
+		fuente.draw(Render.batch, texto, x, y);
 	}
 
 	public void setPosition(float x, float y) {

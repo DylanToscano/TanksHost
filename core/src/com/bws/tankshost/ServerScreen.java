@@ -16,7 +16,7 @@ import network.Serverside;
 import tiledMapObjects.World2D;
 import tiledMapObjects.WorldListener;
 import utilities.Config;
-import utilities.ClientRender;
+import utilities.Render;
 import utilities.Resources;
 
 public class ServerScreen implements Screen {
@@ -47,8 +47,8 @@ public class ServerScreen implements Screen {
 		renderer = new OrthogonalTiledMapRenderer(map, 1 / Config.PPM);
 
 		// set map properties
-		ClientRender.world = new World(new Vector2(0, 0), true);
-		world = ClientRender.world;
+		Render.world = new World(new Vector2(0, 0), true);
+		world = Render.world;
 		// render which draws box2d Textures
 		b2dr = new Box2DDebugRenderer();
 		// then camera zoom
@@ -68,7 +68,7 @@ public class ServerScreen implements Screen {
 	@Override
 	public void show() {
 
-		b = ClientRender.batch;
+		b = Render.batch;
 		gamePort.getCamera().position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
 	}
@@ -77,15 +77,15 @@ public class ServerScreen implements Screen {
 	public void render(float delta) {
 		gamePort.apply();
 		update(delta);
-		ClientRender.cleanScreen();
+		Render.cleanScreen();
 		b.setProjectionMatrix(camera.combined);
 		// loads map
 		renderer.render();
 		// loads box2dDebugLines hitboxes
 		b2dr.render(world, camera.combined);
 		b.begin();
-		for (int i = 0; i < ClientRender.tanks.size(); i++) {
-			ClientRender.tanks.get(i).update();
+		for (int i = 0; i < Render.tanks.size(); i++) {
+			Render.tanks.get(i).update();
 		}
 		b.end();
 

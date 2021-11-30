@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import utilities.Config;
-import utilities.ClientRender;
+import utilities.Render;
 
 public class Projectile extends Entity2D {
 	public float speedMod;
@@ -23,7 +23,7 @@ public class Projectile extends Entity2D {
 	public Projectile(float x, float y, Hull hull, String texture, float speedMod) {
 		super(new Texture(texture),texture);
 		parent = hull;
-		this.world = ClientRender.world;
+		this.world = Render.world;
 		this.speedMod = speedMod;
 		setDegrees(hull.rotation);
 		setSize(getWidth() / 2 / Config.PPM, getHeight() / 2 / Config.PPM);

@@ -5,13 +5,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import network.Serverside;
 import network.ServersideThread;
-import utilities.ClientRender;
+import utilities.Render;
 
 public class TanksHost extends Game {
 	
 	public void create () {
-		ClientRender.app = this;
-		ClientRender.batch = new SpriteBatch();
+		Render.app = this;
+		Render.batch = new SpriteBatch();
 		this.setScreen(new ServerScreen());
 	}
 
@@ -22,6 +22,6 @@ public class TanksHost extends Game {
 	public void dispose () {
 		ServersideThread sThread = Serverside.getHs();
 		if(sThread != null) {sThread.stopServer();}
-		ClientRender.batch.dispose();
+		Render.batch.dispose();
 	}
 }

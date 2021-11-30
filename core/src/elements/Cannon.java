@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import TankData.BasicShell;
 import TankData.ExplosiveShell;
 import utilities.Config;
-import utilities.ClientRender;
+import utilities.Render;
 import utilities.Resources;
 
 public class Cannon extends Attachable {
@@ -52,7 +52,7 @@ public class Cannon extends Attachable {
 				shell = new BasicShell(getX() + getWidth() / 2, getY() + getHeight() / 2, hull);
 			}
 			
-			ClientRender.addSprite(shell);
+			Render.addSprite(shell);
 			fireFX.setOrigin(fireFX.getWidth() / 2, -hull.getHeight() / 1.5f);
 			projectiles.add(shell);
 			time = 0;
@@ -66,9 +66,9 @@ public class Cannon extends Attachable {
 		fireFX.setRotation(rotation);
 		
 		if (time < fireEffectTime) {
-			ClientRender.batch.begin();
-			fireFX.draw(ClientRender.batch);
-			ClientRender.batch.end();
+			Render.batch.begin();
+			fireFX.draw(Render.batch);
+			Render.batch.end();
 		}
 	}
 	public void buffFireRate(){

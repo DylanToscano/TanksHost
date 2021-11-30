@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 
 import utilities.Config;
-import utilities.ClientRender;
+import utilities.Render;
 import utilities.Resources;
 
 public class Explosion extends Entity2D implements Updateable{
@@ -24,15 +24,15 @@ public class Explosion extends Entity2D implements Updateable{
 	//in this case the frameSize will always be 5,(cause we only have 5 sprites xd)
 	private float framesSize = 5;
 	public Explosion(float x,float y) { 
-		world = ClientRender.world;
+		world = Render.world;
 		
 		setPosition(x,y);
 		setAnimation();
 		setRegion(new Texture(Resources.EXPLOSION+1+".png"));
 		this.x = x;
 		this.y = y;
-		ClientRender.addUpdateable(this);
-		ClientRender.addSprite(this);
+		Render.addUpdateable(this);
+		Render.addSprite(this);
 		counter = 0;
 	}
 	

@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import utilities.Config;
 import utilities.Functions;
-import utilities.ClientRender;
+import utilities.Render;
 import utilities.Resources;
 
 public class BarrelEx extends Entity2D{
@@ -15,7 +15,7 @@ public class BarrelEx extends Entity2D{
 	public int id;
 	public BarrelEx() {
 		super(new Texture(Resources.BARREL),Resources.BARREL);
-		this.world = ClientRender.world;
+		this.world = Render.world;
 		setSize(20/Config.PPM,20/Config.PPM);
 		setPosition(Functions.randomFloat(10,50)*15/Config.PPM,Functions.randomFloat(10,50)*15/Config.PPM);
 //		setPosition(3,3);
@@ -45,7 +45,7 @@ public class BarrelEx extends Entity2D{
 	public void Hitted() {
 		hit = true;
 		Explosion explosion = new Explosion(getX(), getY());
-		ClientRender.addSprite(explosion);
+		Render.addSprite(explosion);
 	}
 
 }

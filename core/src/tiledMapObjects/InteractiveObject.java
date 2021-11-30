@@ -16,7 +16,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import utilities.Config;
-import utilities.ClientRender;
+import utilities.Render;
 
 public abstract class InteractiveObject {
 	protected boolean interaction = false;
@@ -30,7 +30,7 @@ public abstract class InteractiveObject {
 
 	public InteractiveObject( TiledMap map, Rectangle limits) {
 		
-		this.world = ClientRender.world;
+		this.world = Render.world;
 		this.limits = limits;
 		this.map = map;
 		// propiedades del cuerpo box2d

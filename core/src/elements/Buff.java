@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import utilities.Config;
 import utilities.Functions;
-import utilities.ClientRender;
+import utilities.Render;
 
 public abstract class Buff extends Entity2D {
 	private boolean picked;
@@ -20,7 +20,7 @@ public abstract class Buff extends Entity2D {
 		
 //		setPosition(3F+Config.counter/2,3f);
 //		Config.counter++;
-		this.world = ClientRender.world;
+		this.world = Render.world;
 		createBody();
 		fixtureDef();
 		
