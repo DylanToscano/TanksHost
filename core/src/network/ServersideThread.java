@@ -11,6 +11,7 @@ import com.badlogic.gdx.Gdx;
 import com.bws.tankshost.ServerConfig;
 
 import elements.Tank;
+import input.Client;
 import input.InputKeys;
 import utilities.Render;
 
@@ -19,7 +20,7 @@ public class ServersideThread extends Thread {
 	private long serverTick;
 	private long lastPing;
 	ServerTickThread tickThread;
-	int idCounter = 0; //Tank ID Counter
+	int idCounter = 0; // Tank ID Counter
 	private DatagramSocket socket;
 	private boolean end, serverCreated = false;
 	int socketPort = ServerConfig.DEFAULT_PORT;
@@ -85,7 +86,7 @@ public class ServersideThread extends Thread {
 		if (serverTick - lastPing >= ServerConfig.PING_RATE) {// If there's been enough ticks between last ping.
 			broadcast(NetworkCodes.PING);
 		}
-		//Sync tanks with server.
+		// Sync tanks with server.
 		syncPlayerTanks();
 
 		// Finish server tick
@@ -127,7 +128,9 @@ public class ServersideThread extends Thread {
 			sendMessage(NetworkCodes.FORBIDDEN + "Not connected to server.", packet.getAddress(), packet.getPort());
 			return;
 		}
-		System.out.println("[SERVER RECEIVED]" + msg);
+		if (!networkCode.equals(NetworkCodes.PONG)) {
+			System.out.println("[SERVER RECEIVED]" + msg);
+		}
 
 		switch (networkCode) { // switches the network code.
 		case NetworkCodes.CONNECT: // connect
@@ -143,8 +146,8 @@ public class ServersideThread extends Thread {
 			break;
 		///
 		case NetworkCodes.PONG:
-		
-		break;
+
+			break;
 		///
 		default:
 			sendMessage(NetworkCodes.ERROR + "Invalid network code.", packet.getAddress(), packet.getPort());
@@ -204,17 +207,20 @@ public class ServersideThread extends Thread {
 		return false;
 	}
 
-	public void addClient(InetAddress ip, int port, String username) {
+	public ServerClient addClient(InetAddress ip, int port, String username) {
+		ServerClient newClient;
 		for (int i = 0; i < clients.length; i++) {
 			if (clients[i] == null) {
-				ServerClient newClient = new ServerClient(ip, port);
+				newClient = new ServerClient(ip, port);
 				newClient.username = username;
 				clients[i] = newClient;
 				connectedClientCounter++;
-				createPlayerTank(newClient);
-				break;
+				createPlayerTank(newClient); // TODO: Make sure tank only spawns during rounds?
+				return newClient;
 			}
 		}
+		return null;
+
 	}
 
 	public void removeClient(int id) {
@@ -253,7 +259,7 @@ public class ServersideThread extends Thread {
 		} else if (usernameInUse(args)) {
 			sendMessage(NetworkCodes.ERROR + "Username in use.", packet.getAddress(), packet.getPort());
 		} else if (connectedClientCounter < ServerConfig.MAX_CLIENTS) {
-			addClient(packet.getAddress(), packet.getPort(), args);
+			ServerClient newClient = addClient(packet.getAddress(), packet.getPort(), args);
 			sendMessage(NetworkCodes.CONNECT + "Connected as " + args, packet.getAddress(), packet.getPort());
 			System.out.println("[SERVER] " + args + " connected.");
 		} else {
@@ -270,13 +276,15 @@ public class ServersideThread extends Thread {
 		String[] args = packagedArgs.split("/");
 		ServerClient requestingClient = clients[getClientID(packet.getAddress())];
 		// Below: Modify the user input keys according to the network message. (huh?)
-		requestingClient.inputs.replace(InputKeys.valueOf(args[0]), !Boolean.parseBoolean(args[1]),Boolean.parseBoolean(args[1]));
+		requestingClient.inputs.replace(InputKeys.valueOf(args[0]), !Boolean.parseBoolean(args[1]),
+				Boolean.parseBoolean(args[1]));
 	}
 
 /////////////////TANK MANAGER
-	
+
 	private String getTankData(Tank tank) {
-		return (tank.owner.username+"/"+tank.hull.b2body.getPosition().x+"/"+tank.hull.b2body.getPosition().y+"/"+tank.hull.rotation+"/"+tank.hull.isOnRoad());
+		return (tank.owner.username + "/" + tank.hull.b2body.getPosition().x + "/" + tank.hull.b2body.getPosition().y
+				+ "/" + tank.hull.rotation);
 	}
 
 	private void createPlayerTank(final ServerClient player) {
@@ -286,8 +294,7 @@ public class ServersideThread extends Thread {
 				Tank tank = new Tank(player, idCounter);
 				idCounter++;
 				Render.tanks.add(tank);
-				broadcast(NetworkCodes.NEWTANK+getTankData(tank));
-				System.out.println("CREATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE: "+Render.tanks.size());
+				broadcast(NetworkCodes.NEWTANK + getTankData(tank));
 			}
 		});
 	}
@@ -306,12 +313,14 @@ public class ServersideThread extends Thread {
 			}
 		});
 	}
-	
+
 	private void syncPlayerTanks() {
-		if (Render.tanks.size() == 0) {return;}
+		if (Render.tanks.size() == 0) {
+			return;
+		}
 		for (int i = 0; i < Render.tanks.size(); i++) {
 			Tank tank = Render.tanks.get(i);
-			broadcast(NetworkCodes.TANKSYNC+getTankData(tank));
+			broadcast(NetworkCodes.TANKSYNC + getTankData(tank));
 		}
 	}
 
