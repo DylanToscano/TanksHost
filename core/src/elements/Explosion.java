@@ -12,7 +12,7 @@ import utilities.Config;
 import utilities.Render;
 import utilities.Resources;
 
-public class Explosion extends Entidad2D implements Updateable{
+public class Explosion extends Entity2D implements Updateable{
 	//this is gonna be an animation, so we had to start with that.
 	private float radAux;
 	private Animation<Sprite> animation;
@@ -60,7 +60,7 @@ public class Explosion extends Entidad2D implements Updateable{
 	protected void createBody() {
 		bdef = new BodyDef();
 		bdef.position.set(x,y);
-		bdef.type = BodyDef.BodyType.KinematicBody;
+		bdef.type = BodyDef.BodyType.DynamicBody;
 		b2body = world.createBody(bdef);
 		
 		
@@ -72,7 +72,7 @@ public class Explosion extends Entidad2D implements Updateable{
 		CircleShape shape = new CircleShape();
 		shape.setRadius(radAux);
 		fdef.filter.categoryBits = Config.EXPLOSION_BIT;
-		fdef.filter.maskBits = Config.TANK_BIT | Config.PROJECTIL_BIT ;
+		fdef.filter.maskBits = Config.TANK_BIT | Config.BARREL_BIT;
 		fdef.shape = shape;
 		fdef.isSensor = true;
 		b2body.createFixture(fdef).setUserData(this);

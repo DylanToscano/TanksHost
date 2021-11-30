@@ -21,7 +21,6 @@ public abstract class Render {
 	public static SpriteBatch batch;
 	public static TanksHost app;
 	public static World world;
-
 	public static ArrayList<Tank> tanks = new ArrayList<Tank>();
 	public static ArrayList<Sprite> renderList = new ArrayList<Sprite>();
 	public static ArrayList<Updateable> updateList = new ArrayList<Updateable>();

@@ -7,12 +7,14 @@ public class Functions {
 	
 	public static float randomFloat(float min, float max) {
 		Random r = new Random();
-		float random = min + r.nextFloat() * (max - min);
+		float ra =  r.nextFloat();
+		float random = min + ra * (max - min);
+		
 		return (float) random;
 	}
-	public static float randomInt(int min, int max) {
+	public static int randomInt(int min, int max) {
 		Random r = new Random();
-		int random = min + r.nextInt() * (max - min);
+		int random = r.nextInt(max-min+1)+min;
 		return random;
 	}
 }

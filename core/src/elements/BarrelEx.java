@@ -10,13 +10,14 @@ import utilities.Functions;
 import utilities.Render;
 import utilities.Resources;
 
-public class BarrelEx extends Entidad2D{
+public class BarrelEx extends Entity2D{
 	public boolean hitted;
 	public BarrelEx() {
 		super(new Texture(Resources.BARREL));
 		this.world = Render.world;
 		setSize(20/Config.PPM,20/Config.PPM);
 		setPosition(Functions.randomFloat(10,50)*15/Config.PPM,Functions.randomFloat(10,50)*15/Config.PPM);
+//		setPosition(3,3);
 		createBody();
 		fixtureDef();
 	}
@@ -25,10 +26,8 @@ public class BarrelEx extends Entidad2D{
 	protected void createBody() {
 		bdef = new BodyDef();
 		bdef.position.set(getX()+getWidth()/2,getY()+getHeight()/2);
-		bdef.type = BodyDef.BodyType.KinematicBody;
+		bdef.type = BodyDef.BodyType.DynamicBody;
 		b2body = world.createBody(bdef);
-		
-		
 	}
 
 	@Override
@@ -37,9 +36,8 @@ public class BarrelEx extends Entidad2D{
 		CircleShape shape = new CircleShape();
 		shape.setRadius(getWidth()/2);
 		fdef.filter.categoryBits = Config.BARREL_BIT;
-		fdef.filter.maskBits = Config.TANK_BIT | Config.PROJECTIL_BIT | Config.EXPLOSION_BIT;
+		fdef.filter.maskBits = Config.EXPLOSION_BIT | Config.DEFAULT_BIT | Config.TANK_BIT | Config.PROJECTIL_BIT ;
 		fdef.shape = shape;
-		fdef.isSensor = true;
 		b2body.createFixture(fdef).setUserData(this);
 
 	}

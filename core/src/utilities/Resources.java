@@ -34,7 +34,7 @@ public class Resources {
 	
 	public static final String EXPLOSION = "Tanks/Explosions/explosion";
 	public static final String BARREL = "Obstacles/barrelRed_top.png";
-	public static final String WALL = "Obstacles/barricadeWood.png";
+	public static final String BARRICADE = "Obstacles/Barricade.png";
 	
 	
 	public static final String SCENESKIN = "Scenes/Escenes2DTanks!.json";

@@ -12,7 +12,7 @@ import input.InputKeys;
 import utilities.Config;
 import utilities.Render;
 
-public class Hull extends Entidad2D {
+public class Hull extends Entity2D {
 	public int id;
 	private World world;
 	public int roadCounter = 0;

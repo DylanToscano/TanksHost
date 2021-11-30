@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import utilities.Config;
 import utilities.Render;
 
-public class Projectile extends Entidad2D {
+public class Projectile extends Entity2D {
 	public float speedMod;
 	public Hull parent;
 	public float degrees;

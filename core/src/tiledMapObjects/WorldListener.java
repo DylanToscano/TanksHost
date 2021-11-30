@@ -7,10 +7,12 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 import elements.BarrelEx;
+import elements.Buff;
 import elements.CooldownBuff;
 import elements.Explosion;
 import elements.ExplosiveBuff;
 import elements.Hull;
+import elements.Obstacle;
 import elements.Projectile;
 import elements.SpeedBuff;
 
@@ -32,22 +34,82 @@ public class WorldListener implements ContactListener {
 		detectBuff();
 		detectBarrel();
 		detectExplosion();
+		detectObstacle();
+	}
+
+
+	// -------------------------END CONTACT------------------------------------
+
+	@Override
+	public void endContact(Contact contact) {
+		
+		if (fixA.getUserData() != null && fixB.getUserData() != null) {
+			if (fixA.getUserData().equals("Road") || fixB.getUserData().equals("Road")) {
+
+				Fixture road = (fixA.getUserData().equals("Road")) ? fixA : fixB;
+				Fixture objeto = (road == fixA) ? fixB : fixA;
+
+				if (objeto.getUserData() != null && (objeto.getUserData() instanceof Hull)) {
+					
+					// idk what happened really, but i thinks that the projectil counted as a hull(I
+					// DONT KNOW WHY, SO I DID THIS TO NO REPEAT THE SAME ROAD unless
+					// the tank reEnters that single road)
+				
+					if (((actualLeft == null || actualLeft != road)) || ((Hull) objeto.getUserData()).roadCounter > 0) {
+						((Hull) objeto.getUserData()).outRoad();
+						
+						
+					}
+					actualLeft = road;
+
+				}
+
+			}
+		}
 
 	}
 
+
+
+	@Override
+	public void preSolve(Contact contact, Manifold oldManifold) {
+
+	}
+
+	@Override
+	public void postSolve(Contact contact, ContactImpulse impulse) {
+
+	}
 	
 
+	private void detectObstacle() {
+		if (fixA.getUserData() instanceof Obstacle || fixB.getUserData() instanceof Obstacle) {
+			Fixture obstacle = (fixA.getUserData() instanceof Obstacle) ? fixA : fixB;
+			Fixture object = (obstacle == fixA) ? fixB : fixA;
+			
+			if (object.getUserData() != null && (object.getUserData() instanceof Buff)){
+				
+				((Obstacle) obstacle.getUserData()).needCorrect();	
+				
+				
+			}
+		}
+		
+		
+	}
+
+
+
 	private void detectExplosion() {
+		
 		if (fixA.getUserData() instanceof Explosion || fixB.getUserData() instanceof Explosion) {
 			Fixture explosion = (fixA.getUserData() instanceof Explosion) ? fixA : fixB;
 			Fixture object = (explosion == fixA) ? fixB : fixA;
-
 			if (object.getUserData() != null && (object.getUserData() instanceof Hull)){
 				if(explosion != actualExplosion) {
 					((Hull) object.getUserData()).receiveExplosiveDamage(((Explosion) explosion.getUserData()).getDmg());
 					actualExplosion = explosion;
 				}
-				
 			}
 		}
 	}
@@ -58,13 +120,13 @@ public class WorldListener implements ContactListener {
 		if (fixA.getUserData() instanceof BarrelEx || fixB.getUserData() instanceof BarrelEx) {
 			Fixture barrel = (fixA.getUserData() instanceof BarrelEx) ? fixA : fixB;
 			Fixture object = (barrel == fixA) ? fixB : fixA;
-
+			
 			if (object.getUserData() != null && (object.getUserData() instanceof Hull || object.getUserData() instanceof Projectile || object.getUserData() instanceof Explosion )) {
+				
 				((BarrelEx) barrel.getUserData()).Hitted();
 			}
 			if (object.getUserData() != null && (object.getUserData() instanceof Projectile)) {
 				// the bullet just disappear
-				System.out.println("toco el barrel");
 					((Projectile) object.getUserData()).explode();
 
 			}
@@ -90,6 +152,10 @@ public class WorldListener implements ContactListener {
 
 				}
 
+			}
+			if (object.getUserData() != null && object.getUserData() instanceof Obstacle) {
+				// trigger sensors
+					((Projectile) projectile.getUserData()).explode();
 			}
 			
 			
@@ -157,47 +223,6 @@ public class WorldListener implements ContactListener {
 				}
 			}
 		}
-
-	}
-
-	// -------------------------END CONTACT------------------------------------
-
-	@Override
-	public void endContact(Contact contact) {
-		if (fixA.getUserData() != null && fixB.getUserData() != null) {
-			if (fixA.getUserData().equals("Road") || fixB.getUserData().equals("Road")) {
-
-				Fixture road = (fixA.getUserData().equals("Road")) ? fixA : fixB;
-				Fixture objeto = (road == fixA) ? fixB : fixA;
-
-				if (objeto.getUserData() != null && (objeto.getUserData() instanceof Hull)) {
-					
-					// idk what happened really, but i thinks that the projectil counted as a hull(I
-					// DONT KNOW WHY, SO I DID THIS TO NO REPEAT THE SAME ROAD unless
-					// the tank reEnters that single road)
-				
-					if (((actualLeft == null || actualLeft != road)) || ((Hull) objeto.getUserData()).roadCounter > 0) {
-						((Hull) objeto.getUserData()).outRoad();
-						
-						
-					}
-					actualLeft = road;
-
-				}
-
-			}
-		}
-
-	}
-	
-
-	@Override
-	public void preSolve(Contact contact, Manifold oldManifold) {
-
-	}
-
-	@Override
-	public void postSolve(Contact contact, ContactImpulse impulse) {
 
 	}
 
