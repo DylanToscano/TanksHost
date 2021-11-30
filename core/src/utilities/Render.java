@@ -45,6 +45,7 @@ public abstract class Render {
 						
 					}else if(renderList.get(i) instanceof Projectile && ((Projectile) renderList.get(i)).isExploded()) {
 						((Projectile) renderList.get(i)).disappear();
+						
 						renderList.remove(i);
 					}else if(renderList.get(i) instanceof Explosion && ((Explosion) renderList.get(i)).end) {
 						renderList.remove(i);

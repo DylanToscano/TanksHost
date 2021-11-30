@@ -62,8 +62,6 @@ public class ServerScreen implements Screen {
 		// set the world contact listener
 		worldListener = new WorldListener();
 		world.setContactListener(worldListener);
-		
-
 
 	}
 
@@ -94,15 +92,29 @@ public class ServerScreen implements Screen {
 	}
 
 	private void update(float delta) {
-		
+
 		Config.delta = delta;
 		camera.update();
 		// 60 ticks in a second if im right
 		world.step(1 / 60f, 6, 2);
 		// sets whats the renderer gonna draw, that shows in camera
 		renderer.setView(camera);
-		
+
 	}
+
+//	private void correctObstacle() {
+//
+//		if (obstacle1.corrections > 0 && time < 0.2f) {
+//			obstacle1.correct();
+//		} else {
+//			obstacle1.fixed();
+//
+//			if (obstacle1.corrections > 0) {
+//				time = 0;
+//			}
+//		}
+//
+//	}
 
 	@Override
 	public void resize(int width, int height) {
