@@ -5,16 +5,25 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class ClientSprite extends Sprite {
 	//Yes. We made an entire class just to add an int, because Marconi.
-	int id;
+	private int id;
 	String textureRoute;
+	private boolean removed;
 	
-	public ClientSprite(Texture texture,String textureRoute) {
-		super(texture);
+	public ClientSprite(String textureRoute) {
+		super(new Texture(textureRoute));
 		this.textureRoute = textureRoute;
 		
 	}
 	public ClientSprite() {
 		
+	}
+	
+	public void remove() {
+		removed = true;
+	}
+	
+	public boolean isRemoved() {
+		return removed;
 	}
 	
 	public void setID(int id) {

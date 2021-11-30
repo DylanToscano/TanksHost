@@ -15,7 +15,7 @@ import utilities.Resources;
 public class Cannon extends Attachable {
 	public float reloadTime = 2;
 	public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
-	Sprite fireFX;
+	ClientSprite fireFX;
 	public Sound fireSfx;
 	public float time;
 	public float fireEffectTime = 0.1f;
@@ -23,7 +23,8 @@ public class Cannon extends Attachable {
 	public Cannon(String route) {
 		super(route);
 		flip(false, true);
-		fireFX = new Sprite(new Texture(Resources.CANNON_FIRE_FX));
+		fireFX = new ClientSprite(Resources.CANNON_FIRE_FX);
+		Render.renderList.add(fireFX);
 		fireFX.flip(false, true);
 		fireFX.setSize(getWidth(), getHeight());
 		fireFX.setPosition(2 * 100, 2 * 100);
@@ -66,9 +67,7 @@ public class Cannon extends Attachable {
 		fireFX.setRotation(rotation);
 		
 		if (time < fireEffectTime) {
-			Render.batch.begin();
 			fireFX.draw(Render.batch);
-			Render.batch.end();
 		}
 	}
 	public void buffFireRate(){

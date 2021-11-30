@@ -39,7 +39,6 @@ public abstract class Render {
 					// cause
 					// we cant disappear it at the moment of the world listener cause the game
 					// crashes because the world2d is locked.
-
 					if (renderList.get(i) instanceof Buff && ((Buff) renderList.get(i)).isPicked()) {
 
 						((Buff) renderList.get(i)).disappear();
@@ -59,6 +58,9 @@ public abstract class Render {
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
+				}
+				if (renderList.get(i).isRemoved()) {
+					renderList.remove(i);
 				}
 			} else {
 				renderList.remove(i);
@@ -106,7 +108,7 @@ public abstract class Render {
 	public static void setServerThread(ServersideThread thread) {
 		serversideThread = thread;
 	}
-	
+
 	public static ServersideThread getServerThread() {
 		return serversideThread;
 	}
@@ -123,24 +125,6 @@ public abstract class Render {
 
 	public static void removeSprite() {
 
-	}
-	
-//////TANK MANAGEMENT
-	public static void createTank(ServerClient client) {
-		tanks.add(new Tank(client));
-	}
-	
-	public static void removeTank(ServerClient client) {
-		Tank removedTank = null;
-		for (int i = 0; i < tanks.size(); i++) {
-			if(tanks.get(i).owner == client) {
-				removedTank = tanks.get(i);
-				break;
-			}
-		}
-		if (removedTank != null){
-			
-		}
 	}
 
 }

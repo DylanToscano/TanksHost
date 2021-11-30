@@ -7,7 +7,7 @@ import utilities.Resources;
 public class ExplosiveBuff extends Buff{
 
 	public ExplosiveBuff(){
-		super(new Texture(Resources.ROCKETBUFF),Resources.ROCKETBUFF);
+		super(Resources.ROCKETBUFF);
 		b2body.setUserData("explosive");
 		
 	}

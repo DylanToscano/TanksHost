@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bws.tankshost.ServerConfig;
 
@@ -27,7 +28,6 @@ public class ServersideThread extends Thread {
 
 	private int connectedClientCounter = 0;
 	private ServerClient[] clients = new ServerClient[ServerConfig.MAX_CLIENTS];
-	
 
 	public ServersideThread() {
 		serverCreated = startServer();
@@ -38,6 +38,7 @@ public class ServersideThread extends Thread {
 			socket = new DatagramSocket(socketPort);
 			System.out.println("[SERVER] Socket established on port: " + socketPort);
 			spriteIDCounter = 0;
+			Render.setServerThread(this);
 			serverCreated = true;
 			return true; // server created.
 		} catch (SocketException e) {
@@ -81,7 +82,7 @@ public class ServersideThread extends Thread {
 		syncSpriteData();
 		serverTick++;
 	}
-	
+
 	private void checkTimeout() {
 		ServerClient[] connectedClients = getConnectedClients();
 		for (int i = 0; i < connectedClients.length; i++) {
@@ -91,10 +92,10 @@ public class ServersideThread extends Thread {
 			}
 		}
 	}
-	
+
 	private void ping() {
 		if (serverTick - lastPing >= ServerConfig.PING_RATE) {// If there's been enough ticks between last ping.
-			broadcast(NetworkCodes.PING+Render.renderList.size());
+			broadcast(NetworkCodes.PING + Render.renderList.size());
 		}
 	}
 
@@ -220,6 +221,7 @@ public class ServersideThread extends Thread {
 				newClient.username = username;
 				clients[i] = newClient;
 				connectedClientCounter++;
+				createTank(newClient);
 				return newClient;
 			}
 		}
@@ -284,41 +286,69 @@ public class ServersideThread extends Thread {
 	}
 
 /////////////////SPRITE MANAGER
-	
+
 	public int generateSpriteID() {
 		spriteIDCounter++;
 		return spriteIDCounter;
 	}
-	
+
 	private String getSpriteData(ClientSprite sprite) {
-		return sprite.getRoute()+"/"+sprite.getID()+"/"+sprite.getX()+"/"+sprite.getY()+"/"+sprite.getRotation()+"/"+sprite.getWidth()+"/"+sprite.getHeight();
+		return sprite.getRoute() + "/" + sprite.getID() + "/" + sprite.getX() + "/" + sprite.getY() + "/"
+				+ sprite.getRotation() + "/" + sprite.getWidth() + "/" + sprite.getHeight();
 	}
-	
+
 	public void addSprite(ClientSprite sprite) {
-		broadcast(NetworkCodes.NEWSPRITE+getSpriteData(sprite) );
+		broadcast(NetworkCodes.NEWSPRITE + getSpriteData(sprite));
 	}
-	
+
 	public void removeSprite(ClientSprite sprite) {
-		broadcast(NetworkCodes.REMOVESPRITE+sprite.getID());
+		broadcast(NetworkCodes.REMOVESPRITE + sprite.getID());
 	}
 
 	private void syncSpriteData() {
 		for (int i = 0; i < Render.renderList.size(); i++) {
 			ClientSprite sprite = Render.renderList.get(i);
-			broadcast(NetworkCodes.UPDATESPRITE+getSpriteData(sprite));
+			broadcast(NetworkCodes.UPDATESPRITE + getSpriteData(sprite));
 		}
 	}
-	
-	private void syncRenderList(ServerClient client) {//For when a player's renderList is desynced.
+
+	private void syncRenderList(ServerClient client) {// For when a player's renderList is desynced.
 		for (int i = 0; i < Render.renderList.size(); i++) {
 			ClientSprite sprite = Render.renderList.get(i);
-			sendMessage(NetworkCodes.NEWSPRITE+getSpriteData(sprite),client.IP,client.port);
+			sendMessage(NetworkCodes.NEWSPRITE + getSpriteData(sprite), client.IP, client.port);
 		}
-		
+
 	}
-	
-	public void doExplosion(float x,float y) {
-		broadcast(NetworkCodes.EXPLOSION+x+"/"+y);
+
+	public void doExplosion(float x, float y) {
+		broadcast(NetworkCodes.EXPLOSION + x + "/" + y);
+	}
+
+//////TANK MANAGEMENT
+	public static void createTank(final ServerClient client) {
+		Gdx.app.postRunnable(new Runnable() {
+			public void run() {
+				Render.tanks.add(new Tank(client));
+			}
+		});
+
+	}
+
+	public static void removeTank(final ServerClient client) {
+		Gdx.app.postRunnable(new Runnable() {
+			public void run() {
+				Tank removedTank = null;
+				for (int i = 0; i < Render.tanks.size(); i++) {
+					if (Render.tanks.get(i).owner == client) {
+						removedTank = Render.tanks.get(i);
+						break;
+					}
+				}
+				if (removedTank != null) {
+
+				}
+			}
+		});
 	}
 
 }

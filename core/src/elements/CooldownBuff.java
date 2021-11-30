@@ -11,7 +11,7 @@ import utilities.Resources;
 public class CooldownBuff extends Buff{
 
 	public CooldownBuff() {
-		super(new Texture(Resources.CDBUFF),Resources.CDBUFF);
+		super(Resources.CDBUFF);
 		b2body.setUserData("cooldown");
 	}
 

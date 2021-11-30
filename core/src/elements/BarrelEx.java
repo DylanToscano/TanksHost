@@ -14,7 +14,7 @@ public class BarrelEx extends Entity2D{
 	public boolean hit;
 	public int id;
 	public BarrelEx() {
-		super(new Texture(Resources.BARREL),Resources.BARREL);
+		super(Resources.BARREL);
 		this.world = Render.world;
 		setSize(20/Config.PPM,20/Config.PPM);
 		setPosition(Functions.randomFloat(10,50)*15/Config.PPM,Functions.randomFloat(10,50)*15/Config.PPM);

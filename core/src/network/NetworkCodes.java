@@ -16,10 +16,10 @@ public abstract class NetworkCodes {
 	public static final String FORBIDDEN = "FRBDN-";
 	public static final String ERROR = "ERROR-";
 	public static final String PING = "PIING-";
-	public static final String PONG = "CPOONG-";
-	public static final String NEWSPRITE   = "SPRITE-";
-	public static final String UPDATESPRITE = "UPRITE-";
-	public static final String REMOVESPRITE  = "NORITE-"; 
+	public static final String PONG = "POONG-";
+	public static final String NEWSPRITE   = "SPRIT-";
+	public static final String UPDATESPRITE = "UPRIT-";
+	public static final String REMOVESPRITE  = "NORIT-"; 
 	public static final String EXPLOSION = "BOOOM-";
 	public static final String RENDERSYNC  ="RSYNC-";
 
