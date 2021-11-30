@@ -11,6 +11,7 @@ import utilities.Render;
 
 public abstract class Buff extends Entity2D {
 	private boolean picked;
+	public int id;
 	public Buff(Texture texture) {
 		super(texture);
 		//random position between the center map

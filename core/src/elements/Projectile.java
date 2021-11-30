@@ -18,6 +18,7 @@ public class Projectile extends Entity2D {
 	float tempX;
 	float tempY;
 	public float dmg;
+	public int id;
 
 	public Projectile(float x, float y, Hull hull, String texture, float speedMod) {
 		super(new Texture(texture));

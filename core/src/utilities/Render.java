@@ -47,7 +47,7 @@ public abstract class Render {
 						renderList.remove(i);
 					}else if(renderList.get(i) instanceof Explosion && ((Explosion) renderList.get(i)).end) {
 						renderList.remove(i);
-					}else if(renderList.get(i) instanceof BarrelEx && ((BarrelEx) renderList.get(i)).hitted) {
+					}else if(renderList.get(i) instanceof BarrelEx && ((BarrelEx) renderList.get(i)).hit) {
 						((BarrelEx) renderList.get(i)).disappear();
 						renderList.remove(i);
 					}

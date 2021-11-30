@@ -12,6 +12,7 @@ import utilities.Resources;
 
 public class Obstacle extends Entity2D {
 	private boolean vertical;
+	public int id;
 
 	public int corrections;
 	public Obstacle() {

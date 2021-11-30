@@ -15,6 +15,7 @@ public class Tank implements Updateable{
 	public float tempX = 0;
 	public float tempY = 0;
 	public float correctionX,correctionY;
+	public int id;
 	
 	public boolean correction;
 	// Array holding other elements of the tank, such as the cannon.
