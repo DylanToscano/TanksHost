@@ -293,7 +293,7 @@ public class ServersideThread extends Thread {
 				Tank tank = new Tank(player);
 				idCounter++;
 				Render.tanks.add(tank);
-				broadcast(NetworkCodes.NEWTANK + getTankData(tank));
+				broadcast(NetworkCodes.NEWOBJECT+"tank/" + getTankData(tank));
 			}
 		});
 	}
@@ -304,6 +304,7 @@ public class ServersideThread extends Thread {
 			public void run() {
 				for (int i = 0; i < Render.tanks.size(); i++) {
 					if (Render.tanks.get(i).owner == player) {
+						broadcast(NetworkCodes.NEWOBJECT+"tank/"+getTankData(Render.tanks.get(i)));
 						Render.tanks.get(i).hull.disappear();
 						Render.tanks.remove(i);
 						break;
@@ -321,6 +322,12 @@ public class ServersideThread extends Thread {
 			Tank tank = Render.tanks.get(i);
 			broadcast(NetworkCodes.TANKSYNC + getTankData(tank));
 		}
+	}
+	
+//////////OBJECT MANAGER
+	
+	private void createNewObject() {
+		
 	}
 
 }

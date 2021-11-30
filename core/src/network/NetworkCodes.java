@@ -18,7 +18,8 @@ public abstract class NetworkCodes {
 	public static final String PING = "SPING-";
 	public static final String PONG = "CPONG-"; //ServerPing and ClientPong!
 	public static final String TANKSYNC = "TSYNC-"; //TankSync. The format is TSYNC-PosX/PosY/Rotation
-	public static final String NEWTANK = "NTANK-"; 
+	public static final String NEWOBJECT   = "NOBJT-";
+	public static final String REMOVEOBJECT  = "ROBJT-";
 	
 
 
