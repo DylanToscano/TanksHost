@@ -6,13 +6,11 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bws.tankshost.ServerConfig;
 
 import elements.Tank;
-import input.Client;
 import input.InputKeys;
-import utilities.Render;
 
 public class ServersideThread extends Thread {
 
@@ -214,7 +212,6 @@ public class ServersideThread extends Thread {
 				newClient.username = username;
 				clients[i] = newClient;
 				connectedClientCounter++;
-				createPlayerTank(newClient); // TODO: Make sure tank only spawns during rounds?
 				return newClient;
 			}
 		}
@@ -224,7 +221,6 @@ public class ServersideThread extends Thread {
 
 	public void removeClient(int id) {
 		// TODO: Consider some kind of dispose() ?
-		removePlayerTank(clients[id]);
 		clients[id] = null;
 		connectedClientCounter--;
 
@@ -281,53 +277,21 @@ public class ServersideThread extends Thread {
 
 /////////////////TANK MANAGER
 
-	private String getTankData(Tank tank) {
-		return (tank.owner.username + "/" + tank.hull.b2body.getPosition().x + "/" + tank.hull.b2body.getPosition().y
+	private String getSpriteData(Tank tank) {
+		return (tank.id + "/" + tank.hull.getX() + "/" + tank.hull.getY()
 				+ "/" + tank.hull.rotation);
 	}
-
-	private void createPlayerTank(final ServerClient player) {
-		Gdx.app.postRunnable(new Runnable() {
-			@Override
-			public void run() {
-				Tank tank = new Tank(player);
-				idCounter++;
-				Render.tanks.add(tank);
-				broadcast(NetworkCodes.NEWOBJECT+"tank/" + getTankData(tank));
-			}
-		});
-	}
-
-	private void removePlayerTank(final ServerClient player) {
-		Gdx.app.postRunnable(new Runnable() {
-			@Override
-			public void run() {
-				for (int i = 0; i < Render.tanks.size(); i++) {
-					if (Render.tanks.get(i).owner == player) {
-						broadcast(NetworkCodes.NEWOBJECT+"tank/"+getTankData(Render.tanks.get(i)));
-						Render.tanks.get(i).hull.disappear();
-						Render.tanks.remove(i);
-						break;
-					}
-				}
-			}
-		});
-	}
-
-	private void syncPlayerTanks() {
-		if (Render.tanks.size() == 0) {
-			return;
-		}
-		for (int i = 0; i < Render.tanks.size(); i++) {
-			Tank tank = Render.tanks.get(i);
-			broadcast(NetworkCodes.TANKSYNC + getTankData(tank));
-		}
-	}
 	
-//////////OBJECT MANAGER
-	
-	private void createNewObject() {
+	public void addSprite(Sprite sprite) {
 		
+	}
+	
+	public void removeSprite(Sprite sprite) {
+		
+	}
+
+	private void syncSpriteData() {
+
 	}
 
 }
