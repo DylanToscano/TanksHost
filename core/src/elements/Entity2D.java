@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import utilities.Render;
 
-public abstract class Entity2D extends Sprite{
+public abstract class Entity2D extends ClientSprite{
 	// box2D
 	protected FixtureDef fdef;
 	protected BodyDef bdef;
