@@ -157,6 +157,14 @@ public class Tank implements Updateable{
 				System.out.println("se removio los attachables");
 			}
 		}
+		
+		for (int i = 0; i < Render.renderList.size(); i++) {
+			if(Render.tanks.get(i) == this) {
+				Render.tanks.remove(i);
+				break;
+			}
+		}
+		
 		hull.remove();
 		hull.disappear();
 
