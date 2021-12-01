@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -27,7 +28,7 @@ public class ServersideThread extends Thread {
 	int socketPort = ServerConfig.DEFAULT_PORT;
 
 	private int connectedClientCounter = 0;
-	private ServerClient[] clients = new ServerClient[ServerConfig.MAX_CLIENTS];
+	private ArrayList<ServerClient> clients;
 
 	public ServersideThread() {
 		serverCreated = startServer();
@@ -85,9 +86,8 @@ public class ServersideThread extends Thread {
 	}
 
 	private void checkTimeout() {
-		ServerClient[] connectedClients = getConnectedClients();
-		for (int i = 0; i < connectedClients.length; i++) {
-			int tickDifference = (int) (serverTick - connectedClients[i].lastTick);
+		for (int i = 0; i < clients.size(); i++) {
+			int tickDifference = (int) (serverTick - clients.get(i).lastTick);
 			if (tickDifference > 150) { // If the user didn't pong or send messages for 200 ticks, disconnect.
 				disconnectClient(i);
 			}
@@ -166,7 +166,7 @@ public class ServersideThread extends Thread {
 		}
 
 		if (!networkCode.equals(NetworkCodes.DISCONNECT)) {
-			ServerClient currentClient = clients[getClientID(packet.getAddress())];
+			ServerClient currentClient = clients.get(getClientID(packet.getAddress()));
 			currentClient.lastTick = serverTick; // acknowledge the client who ticked the server.
 		}
 
@@ -183,17 +183,16 @@ public class ServersideThread extends Thread {
 	}
 
 	public void broadcast(String msg) { // send message to all connected clients.
-		ServerClient[] connectedClients = getConnectedClients();
-		for (int i = 0; i < connectedClients.length; i++) {
-			sendMessage(msg, clients[i].IP, clients[i].port);
+		for (int i = 0; i < clients.size(); i++) {
+			sendMessage(msg, clients.get(i).IP, clients.get(i).port);
 		}
 	}
 
 //////////////Client handling////////////////////////////////////
 
 	public boolean isClient(InetAddress ip) {
-		for (int i = 0; i < clients.length; i++) {
-			if (clients[i] != null && clients[i].IP == ip) {
+		for (int i = 0; i < clients.size(); i++) {
+			if (clients.get(i).IP == ip) {
 				return true;
 			}
 		}
@@ -201,8 +200,8 @@ public class ServersideThread extends Thread {
 	}
 
 	public int getClientID(InetAddress ip) {
-		for (int i = 0; i < clients.length; i++) {
-			if (clients[i] != null && clients[i].IP == ip) {
+		for (int i = 0; i < clients.size(); i++) {
+			if (clients.get(i).IP == ip) {
 				return i;
 			}
 		}
@@ -210,8 +209,8 @@ public class ServersideThread extends Thread {
 	}
 
 	public boolean usernameInUse(String username) {
-		for (int i = 0; i < clients.length; i++) {
-			if (clients[i] != null && clients[i].username == username) {
+		for (int i = 0; i < clients.size(); i++) {
+			if (clients.get(i).username == username) {
 				return true;
 			}
 		}
@@ -220,12 +219,11 @@ public class ServersideThread extends Thread {
 
 	public ServerClient addClient(InetAddress ip, int port, String username) {
 		ServerClient newClient;
-		for (int i = 0; i < clients.length; i++) {
-			if (clients[i] == null) {
+		for (int i = 0; i < clients.size(); i++) {
+			if (clients.get(i) == null) {
 				newClient = new ServerClient(ip, port);
 				newClient.username = username;
-				clients[i] = newClient;
-				connectedClientCounter++;
+				clients.add(newClient);
 				createTank(newClient);
 				return newClient;
 			}
@@ -236,29 +234,13 @@ public class ServersideThread extends Thread {
 
 	public void removeClient(int id) {
 		// TODO: Consider some kind of dispose() ?
-		clients[id] = null;
-		connectedClientCounter--;
+		clients.remove(id);
 
 	}
 
 	public void disconnectClient(int index) {
-		sendMessage(NetworkCodes.DISCONNECT, clients[index].IP, clients[index].port);
+		sendMessage(NetworkCodes.DISCONNECT, clients.get(index).IP, clients.get(index).port);
 		removeClient(index);
-	}
-
-	public ServerClient[] getConnectedClients() {
-		ServerClient[] connectedClients = new ServerClient[connectedClientCounter];
-		int fillCount = 0;
-		for (int i = 0; i < ServerConfig.MAX_CLIENTS; i++) {
-			if (clients[i] != null) {
-				connectedClients[fillCount] = clients[i];
-				fillCount++;
-			}
-			if (fillCount >= connectedClientCounter) {
-				break;
-			}
-		}
-		return connectedClients;
 	}
 
 	//////////// processMessage functions//////////////////////////////////////////
@@ -284,7 +266,7 @@ public class ServersideThread extends Thread {
 	private void handleUserInput(DatagramPacket packet, String packagedArgs) { // packaged args is the string with
 																				// multiple arguments divided with /
 		String[] args = packagedArgs.split("-");
-		ServerClient requestingClient = clients[getClientID(packet.getAddress())];
+		ServerClient requestingClient = clients.get( getClientID(packet.getAddress()));
 		// Below: Modify the user input keys according to the network message. (huh?)
 		requestingClient.inputs.replace(InputKeys.valueOf(args[0]), !Boolean.parseBoolean(args[1]),
 				Boolean.parseBoolean(args[1]));
