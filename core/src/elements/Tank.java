@@ -149,6 +149,12 @@ public class Tank implements Updateable{
 	}
 
 	public void destroy() {
+		for (int i = 0; i < objects.length; i++) {
+			if (objects[i] != null) {
+				objects[i].remove();
+			}
+		}
+		hull.remove();
 		hull.disappear();
 
 	}
