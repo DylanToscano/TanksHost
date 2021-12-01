@@ -1,0 +1,68 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	TanksFont: {
+		file: Merriweather-Regular.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	RGBA_0_0_0_255: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable: {
+	hp_bar: {
+		patch: hp_bar
+		minWidth: 10
+		minHeight: 24
+		leftWidth: 0
+		rightWidth: 0
+		topHeight: 0
+		bottomHeight: 0
+	}
+	bulletCd_bar: {
+		patch: bulletCd_bar
+		minWidth: 10
+		minHeight: 12
+		leftWidth: 0
+		rightWidth: 0
+		topHeight: 0
+		bottomHeight: 0
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: TanksFont
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: invisiblePixel
+	}
+	default-vertical: {
+		background: invisiblePixel
+	}
+	hpBar: {
+		background: invisiblePixel
+		knobBefore: hp_bar
+	}
+	BulletBar: {
+		background: invisiblePixel
+		knobBefore: bulletCd_bar
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: TanksFont
+		fontColor: RGBA_0_0_0_255
+		background: rectangleBox
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+}

@@ -85,6 +85,15 @@ public class ServerScreen implements Screen {
 		BarrelEx barrel1 = new BarrelEx();
 		BarrelEx barrel2 = new BarrelEx();
 		BarrelEx barrel3 = new BarrelEx();
+		Render.addSprite(barrel1);
+		Render.addSprite(barrel2);
+		Render.addSprite(barrel3);
+		Render.addSprite(buff1);
+		Render.addSprite(buff2);
+		Render.addSprite(buff3);
+		Render.addSprite(obstacle1);
+		Render.addSprite(obstacle2);
+		Render.addSprite(obstacle3);
 	}
 
 	@Override

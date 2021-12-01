@@ -31,7 +31,7 @@ public class Obstacle extends Entity2D {
 //		setPosition(3.3f,3.3f);
 		createBody();
 		fixtureDef();
-		Render.addSprite(this);
+		
 	}
 
 	@Override
