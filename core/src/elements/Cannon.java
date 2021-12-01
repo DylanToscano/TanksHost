@@ -23,11 +23,7 @@ public class Cannon extends Attachable {
 	public Cannon(String route) {
 		super(route);
 		flip(false, true);
-		fireFX = new ClientSprite(Resources.CANNON_FIRE_FX);
-		Render.renderList.add(fireFX);
-		fireFX.flip(false, true);
-		fireFX.setSize(getWidth(), getHeight());
-		fireFX.setPosition(2 * 100, 2 * 100);
+		
 		objectType = "Cannon";
 	}
 
@@ -52,7 +48,11 @@ public class Cannon extends Attachable {
 			}else {
 				shell = new BasicShell(getX() + getWidth() / 2, getY() + getHeight() / 2, hull);
 			}
-			
+			fireFX = new ClientSprite(Resources.CANNON_FIRE_FX);
+			Render.renderList.add(fireFX);
+			fireFX.flip(false, true);
+			fireFX.setSize(getWidth(), getHeight());
+			fireFX.setPosition(2 * 100, 2 * 100);
 			Render.addSprite(shell);
 			fireFX.setOrigin(fireFX.getWidth() / 2, -hull.getHeight() / 1.5f);
 			projectiles.add(shell);

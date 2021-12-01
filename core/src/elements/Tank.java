@@ -139,7 +139,6 @@ public class Tank implements Updateable{
 			if (objects[i] != null) {
 				objects[i].update(hull.getX() + hull.getWidth() / 2 - objects[i].getWidth() / 2,
 						hull.getY() + hull.getHeight() / 2, hull.rotation);
-				System.out.println(hull.rotation);
 				// TODO look a this, when added more attachables, cause its only tought to have
 				// 1 attachable
 
