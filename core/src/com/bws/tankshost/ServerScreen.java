@@ -37,6 +37,7 @@ public class ServerScreen implements Screen {
 	private Box2DDebugRenderer b2dr;
 	private World2D world2d;
 	private WorldListener worldListener;
+	private boolean buffs = false;
 
 	public ServerScreen() {
 
@@ -76,24 +77,7 @@ public class ServerScreen implements Screen {
 
 		b = Render.batch;
 		gamePort.getCamera().position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-		Buff buff1 = new CooldownBuff(); 
-		Buff buff2 = new ExplosiveBuff(); 
-		Buff buff3 = new SpeedBuff(); 
-		Obstacle obstacle1 = new Obstacle();
-		Obstacle obstacle2 = new Obstacle();
-		Obstacle obstacle3 = new Obstacle();
-		BarrelEx barrel1 = new BarrelEx();
-		BarrelEx barrel2 = new BarrelEx();
-		BarrelEx barrel3 = new BarrelEx();
-		Render.addSprite(barrel1);
-		Render.addSprite(barrel2);
-		Render.addSprite(barrel3);
-		Render.addSprite(buff1);
-		Render.addSprite(buff2);
-		Render.addSprite(buff3);
-		Render.addSprite(obstacle1);
-		Render.addSprite(obstacle2);
-		Render.addSprite(obstacle3);
+		
 	}
 
 	@Override
@@ -108,7 +92,7 @@ public class ServerScreen implements Screen {
 		b2dr.render(world, camera.combined);
 		Render.render();
 		Render.updateList();
-
+		
 	}
 
 	private void update(float delta) {
@@ -118,11 +102,12 @@ public class ServerScreen implements Screen {
 		// 60 ticks in a second if im right
 		world.step(1 / 60f, 6, 2);
 		// sets whats the renderer gonna draw, that shows in camera
-		renderer.setView(camera);
-
+		renderer.setView(camera); 
+		
+//		crearBuffs();
 	}
 
-//	private void correctObstacle() {
+//	private void correctObstacle() {  WIP TO NO TOUCH
 //
 //		if (obstacle1.corrections > 0 && time < 0.2f) {
 //			obstacle1.correct();
@@ -135,6 +120,34 @@ public class ServerScreen implements Screen {
 //		}
 //
 //	}
+	
+	public void crearBuffs() {
+		
+		if(!buffs && Render.getServerThread()!= null) {
+			System.out.println(Render.getServerThread());
+			Buff buff1 = new CooldownBuff(); 
+			Buff buff2 = new ExplosiveBuff(); 
+			Buff buff3 = new SpeedBuff(); 
+			Obstacle obstacle1 = new Obstacle();
+			Obstacle obstacle2 = new Obstacle();
+			Obstacle obstacle3 = new Obstacle();
+			BarrelEx barrel1 = new BarrelEx();
+			BarrelEx barrel2 = new BarrelEx();
+			BarrelEx barrel3 = new BarrelEx();
+			Render.addSprite(barrel1);
+			Render.addSprite(barrel2);
+			Render.addSprite(barrel3);
+			Render.addSprite(buff1);
+			Render.addSprite(buff2);
+			Render.addSprite(buff3);
+			Render.addSprite(obstacle1);
+			Render.addSprite(obstacle2);
+			Render.addSprite(obstacle3);
+			buffs = true;
+		}
+		
+	}
+
 
 	@Override
 	public void resize(int width, int height) {
