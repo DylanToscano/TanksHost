@@ -305,8 +305,8 @@ public class ServersideThread extends Thread {
 		ArrayList<Integer> desyncedIDs = new ArrayList<Integer>();//An array of IDs we'll tell the client to remove.
 		for(int i=0; i<args.length; i++) {
 			boolean exists = false;
-			for(int x=0; x<Render.renderList.size(); x++) {
-				if(Integer.parseInt(args[i]) == Render.renderList.get(x).getID()) {
+			for(int j=0; j<Render.renderList.size(); j++) {
+				if(Integer.parseInt(args[i]) == Render.renderList.get(j).getID()) {
 					exists = true;
 				}
 			}
@@ -348,6 +348,7 @@ public class ServersideThread extends Thread {
 
 			}
 		});
+		System.out.println("Remaining tanks: "+Render.tanks.size());
 		if (Render.tanks.size() == 1) {
 			broadcast(NetworkCodes.ENDMATCH + Render.tanks.get(0).owner.username);
 		}
