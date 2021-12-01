@@ -25,8 +25,6 @@ public class ServersideThread extends Thread {
 	private DatagramSocket socket;
 	private boolean end, serverCreated = false;
 	int socketPort = ServerConfig.DEFAULT_PORT;
-
-	private int connectedClientCounter = 0;
 	private ArrayList<ServerClient> clients = new ArrayList<ServerClient>();
 
 	public ServersideThread() {
@@ -69,9 +67,8 @@ public class ServersideThread extends Thread {
 			socketPort++;
 			startServer();
 		} catch (InterruptedException e) {
-			startServer();// retry anyways.
+			//startServer();// retry anyways.
 		}
-		// }//do not continue until it is created.
 	}
 
 	public void serverTick() {
@@ -92,6 +89,7 @@ public class ServersideThread extends Thread {
 
 	private void ping() {
 		if (serverTick - lastPing >= ServerConfig.PING_RATE) {// If there's been enough ticks between last ping.
+			lastPing = serverTick;
 			broadcast(NetworkCodes.PING+Render.renderList.size()+"-"+serverTick);
 		}
 	}
@@ -160,7 +158,6 @@ public class ServersideThread extends Thread {
 		if (!networkCode.equals(NetworkCodes.DISCONNECT) && clients.size() > 0) {
 			ServerClient currentClient = clients.get(getClientID(packet.getAddress()));
 			currentClient.lastTick = serverTick; // acknowledge the client who ticked the server.
-			System.out.println(currentClient.username+": "+(currentClient.lastTick-serverTick));
 		}
 
 	}
@@ -184,7 +181,7 @@ public class ServersideThread extends Thread {
 
 	public boolean isClient(InetAddress ip) {
 		for (int i = 0; i < clients.size(); i++) {
-			if (clients.get(i).IP == ip) {
+			if (clients.get(i).IP.equals(ip)) {
 				return true;
 			}
 		}
@@ -193,7 +190,7 @@ public class ServersideThread extends Thread {
 
 	public int getClientID(InetAddress ip) {
 		for (int i = 0; i < clients.size(); i++) {
-			if (clients.get(i).IP == ip) {
+			if (clients.get(i).IP.equals(ip)) {
 				return i;
 			}
 		}

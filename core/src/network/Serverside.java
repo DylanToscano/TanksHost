@@ -10,8 +10,8 @@ public class Serverside {
 	public Serverside() {
 		hs = new ServersideThread();
 		tickThread = new ServerTickThread(hs);
-		tickThread.start();
 		hs.start();
+		tickThread.start();
 		
 	}
 

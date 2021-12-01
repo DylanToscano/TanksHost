@@ -42,24 +42,27 @@ public abstract class Render {
 					if (renderList.get(i) instanceof Buff && ((Buff) renderList.get(i)).isPicked()) {
 
 						((Buff) renderList.get(i)).disappear();
-						;
+						serversideThread.removeSprite(renderList.get(i));
 						renderList.remove(i);
 
 					} else if (renderList.get(i) instanceof Projectile
 							&& ((Projectile) renderList.get(i)).isExploded()) {
 						((Projectile) renderList.get(i)).disappear();
-
+						
+						serversideThread.removeSprite(renderList.get(i));
 						renderList.remove(i);
 					} else if (renderList.get(i) instanceof Explosion && ((Explosion) renderList.get(i)).end) {
+						serversideThread.removeSprite(renderList.get(i));
 						renderList.remove(i);
 					} else if (renderList.get(i) instanceof BarrelEx && ((BarrelEx) renderList.get(i)).hit) {
 						((BarrelEx) renderList.get(i)).disappear();
+						serversideThread.removeSprite(renderList.get(i));
+						renderList.remove(i);
+					} else if (renderList.get(i).isRemoved()) {
+						serversideThread.removeSprite(renderList.get(i));
 						renderList.remove(i);
 					}
 				} catch (Exception e) {
-				}
-				if (renderList.get(i).isRemoved()) {
-					renderList.remove(i);
 				}
 			} else {
 				renderList.remove(i);

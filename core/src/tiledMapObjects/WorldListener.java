@@ -154,7 +154,6 @@ public class WorldListener implements ContactListener {
 
 			}
 			if (object.getUserData() != null && object.getUserData() instanceof Obstacle) {
-				// trigger sensors
 					((Projectile) projectile.getUserData()).explode();
 			}
 			

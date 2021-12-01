@@ -77,6 +77,7 @@ public class Projectile extends Entity2D {
 	}
 
 	public void explode() {
+		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		explode = true;
 	}
 
