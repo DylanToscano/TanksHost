@@ -153,7 +153,9 @@ public class Tank implements Updateable{
 		Explosion explosion = new Explosion(hull.getX(),hull.getY());
 		for (int i = 0; i < objects.length; i++) {
 			if (objects[i] != null) {
+				
 				objects[i].remove();
+				objects[i].isRemoved();
 				System.out.println("se removio los attachables");
 			}
 		}
