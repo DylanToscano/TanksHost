@@ -272,9 +272,11 @@ public class ServersideThread extends Thread {
 	}
 
 	private String getSpriteData(ClientSprite sprite) {
+	
 		return sprite.getRoute() + "-" + sprite.getID() + "-" + sprite.getX() + "-" + sprite.getY() + "-"
 				+ sprite.getRotation() + "-" + sprite.getWidth() + "-" + sprite.getHeight() + "-" + sprite.getOriginX()
 				+ "-" + sprite.getOriginY();
+		
 	}
 
 	public void addSprite(ClientSprite sprite) {
