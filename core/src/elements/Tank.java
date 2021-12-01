@@ -7,16 +7,14 @@ import input.InputKeys;
 import utilities.Config;
 import utilities.Render;
 
-public class Tank implements Updateable{
+public class Tank implements Updateable {
 	public Hull hull;
 	public Client owner;
-	boolean forward; // direction. true if going forward, false if reverse.
-	float time;
-	public float tempX = 0;
-	public float tempY = 0;
-	public float correctionX,correctionY;
+	private float time;
+	private float tempX = 0;
+	private float tempY = 0;
 	public int id;
-	
+
 	public boolean correction;
 	// Array holding other elements of the tank, such as the cannon.
 	Attachable[] objects;
@@ -58,6 +56,7 @@ public class Tank implements Updateable{
 			tempX = tempX / 2;
 			tempY = tempY / 2;
 		}
+
 		if (hull.isBuffSpeed()) {
 			tempX = tempX * 1.4f;
 			tempY = tempY * 1.4f;
@@ -65,7 +64,6 @@ public class Tank implements Updateable{
 
 //		hull.
 		if (owner.inputs.get(InputKeys.UP) && !owner.inputs.get(InputKeys.DOWN)) { // If pressing W, go forward.
-
 			hull.moveHull(-tempX, tempY);
 		} else if (owner.inputs.get(InputKeys.DOWN) && !owner.inputs.get(InputKeys.UP)) { // If pressing S, go reverse
 			hull.moveHull(tempX / 1.5f, -tempY / 1.5f);
@@ -92,7 +90,7 @@ public class Tank implements Updateable{
 	public void rotate(float degrees) {
 		hull.rotate(degrees);
 		hull.rotation += degrees;
-		
+
 		if (hull.rotation >= 360) {
 			hull.rotation = 0;
 		} else if (hull.rotation <= 0) {
@@ -109,7 +107,7 @@ public class Tank implements Updateable{
 				if (objects[i].objectType == "Cannon") {// failsafe from
 					if (time > ((Cannon) objects[i]).reloadTime) {// spamming space
 						time = 0;
-						((Cannon) objects[i]).trigger(); // omg
+						((Cannon) objects[i]).trigger();
 					}
 				}
 			}
@@ -126,7 +124,6 @@ public class Tank implements Updateable{
 		}
 		if (availablePos != -1) {
 			objects[availablePos] = object;
-
 			object.hull = this.hull;
 		} // If a place was found, attach the object.
 	}
@@ -134,9 +131,6 @@ public class Tank implements Updateable{
 	void updateObjects() { // Fix attached objects position & rotation
 		//
 		for (int i = 0; i < objects.length; i++) {
-//			if (objects[i].objectType.equals("Cannon")) { // updates cannon a its respective projectiles
-//				((Cannon) objects[i]).update();
-//			}
 			if (objects[i] != null) {
 				objects[i].update(hull.getX() + hull.getWidth() / 2 - objects[i].getWidth() / 2,
 						hull.getY() + hull.getHeight() / 2, hull.rotation);
@@ -146,26 +140,22 @@ public class Tank implements Updateable{
 			}
 
 		}
-
 	}
 
 	public void destroy() {
-		Explosion explosion = new Explosion(hull.getX(),hull.getY());
+		Explosion explosion = new Explosion(hull.getX(), hull.getY());
 		for (int i = 0; i < objects.length; i++) {
 			if (objects[i] != null) {
 				objects[i].remove();
-				objects[i].isRemoved();
-				System.out.println("se removio los attachables");
 			}
 		}
-		
 		for (int i = 0; i < Render.renderList.size(); i++) {
-			if(Render.tanks.get(i) == this) {
+			if (Render.tanks.get(i) == this) {
 				Render.tanks.remove(i);
 				break;
 			}
 		}
-		
+
 		hull.remove();
 		hull.disappear();
 

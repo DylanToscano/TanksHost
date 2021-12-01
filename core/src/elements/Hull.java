@@ -1,14 +1,10 @@
 package elements;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-import input.InputKeys;
 import utilities.Config;
 import utilities.Render;
 
@@ -17,7 +13,7 @@ public class Hull extends Entity2D {
 	private World world;
 	public int roadCounter = 0;
 	private boolean[] buffs = { false, false, false }; // speed, fire cooldown, explosiveShell
-	public int startRotation;
+
 	public Tank parent;
 	// stats
 	protected float hp = 0;
@@ -41,7 +37,7 @@ public class Hull extends Entity2D {
 			setPosition(2 * 15 / Config.PPM, 2 * 15 / Config.PPM);
 			break;
 		case 1:
-			setPosition(30 * 15 / Config.PPM, 30 * 15 / Config.PPM); // TODO testing, change from x, 30 -> 2 and y 30
+			setPosition(2 * 15 / Config.PPM, 62 * 15 / Config.PPM); // TODO testing, change from x, 30 -> 2 and y 30
 																		// ->62
 			break;
 		case 2:
@@ -146,7 +142,6 @@ public class Hull extends Entity2D {
 	}
 
 	public void moveHull(float x, float y) {
-
 		b2body.setLinearVelocity(x, y);
 	}
 
@@ -157,7 +152,6 @@ public class Hull extends Entity2D {
 	public void receiveExplosiveDamage(float dmg) {
 		hp -= dmg;
 		hp = (hp < 0) ? 0 : hp;
-		
 	}
 
 	public void receiveDamage(Projectile p) {
@@ -201,6 +195,7 @@ public class Hull extends Entity2D {
 		} else if (angle > 0 && yPos > 0 && xPos > 0) { // ANGULO ENTRO 180 Y 270 EMPEZANDO 0 ARRIBA.
 			angle += 270;
 		}
+		//spanglish time!!!!
 
 		angle = (rotation > angle) ? rotation - angle : angle - rotation;
 		return angle;

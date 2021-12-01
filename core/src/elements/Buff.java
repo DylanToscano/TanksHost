@@ -29,12 +29,9 @@ public abstract class Buff extends Entity2D {
 	@Override
 	protected void createBody() {
 		bdef = new BodyDef();
-		
-		
 		bdef.position.set(getX()+getWidth()/2, getY()+getHeight()/2);
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		b2body = world.createBody(bdef);
-
 	}
 
 	@Override
@@ -42,7 +39,7 @@ public abstract class Buff extends Entity2D {
 		fdef = new FixtureDef();
 		// defines what kind the box is going to have
 		CircleShape shape = new CircleShape();
-
+		
 		shape.setRadius(getWidth() / 2 );
 		fdef.filter.categoryBits = Config.BUFF_BIT;
 		// definimos la mascara de bits, que objetos box2d tiene que darle atencion.

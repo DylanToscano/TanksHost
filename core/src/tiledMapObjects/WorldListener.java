@@ -36,8 +36,6 @@ public class WorldListener implements ContactListener {
 		detectExplosion();
 		detectObstacle();
 	}
-
-
 	// -------------------------END CONTACT------------------------------------
 
 	@Override
@@ -57,8 +55,6 @@ public class WorldListener implements ContactListener {
 				
 					if (((actualLeft == null || actualLeft != road)) || ((Hull) objeto.getUserData()).roadCounter > 0) {
 						((Hull) objeto.getUserData()).outRoad();
-						
-						
 					}
 					actualLeft = road;
 
@@ -146,7 +142,6 @@ public class WorldListener implements ContactListener {
 
 				if (((Hull) object.getUserData()) != ((Projectile) projectile.getUserData()).parent
 						&& !((Projectile) projectile.getUserData()).isExploded()) {
-
 					((Projectile) projectile.getUserData()).explode();
 					((Hull) object.getUserData()).receiveDamage(((Projectile) projectile.getUserData()));
 
@@ -172,7 +167,6 @@ public class WorldListener implements ContactListener {
 			Fixture road = (fixA.getUserData().equals("Road")) ? fixA : fixB;
 			Fixture objeto = (road == fixA) ? fixB : fixA;
 			if (objeto.getUserData() != null && (objeto.getUserData() instanceof Hull)) {
-		
 				// se activa la interaccion con el tipo de objeto que sea
 				if ((actualIn == null || actualIn != road) || ((Hull) objeto.getUserData()).roadCounter == 0) {
 					((Hull) objeto.getUserData()).inRoad();	

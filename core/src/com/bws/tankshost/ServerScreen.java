@@ -96,7 +96,6 @@ public class ServerScreen implements Screen {
 	}
 
 	private void update(float delta) {
-
 		Config.delta = delta;
 		camera.update();
 		// 60 ticks in a second if im right

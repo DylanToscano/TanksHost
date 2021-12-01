@@ -23,7 +23,6 @@ public class Cannon extends Attachable {
 	public Cannon(String route) {
 		super(route);
 		flip(false, true);
-		
 		objectType = "Cannon";
 	}
 
@@ -41,20 +40,19 @@ public class Cannon extends Attachable {
 	
 	public void trigger() {
 			Projectile shell;
-//			fireSfx.play(1,Functions.randomFloat(0.8f,1.2f), 1);
 			if(hull.isBuffExplosive()) {
 				shell = new ExplosiveShell(getX() + getWidth() / 2, getY() + getHeight() / 2, hull);
 			}else {
 				shell = new BasicShell(getX() + getWidth() / 2, getY() + getHeight() / 2, hull);
 			}
+			projectiles.add(shell);
 			fireFX = new ClientSprite(Resources.CANNON_FIRE_FX);
 			Render.renderList.add(fireFX);
 			fireFX.flip(false, true);
 			fireFX.setSize(getWidth(), getHeight());
 			fireFX.setPosition(2 * 100, 2 * 100);
-			Render.addSprite(shell);
 			fireFX.setOrigin(fireFX.getWidth() / 2, -hull.getHeight() / 1.5f);
-			projectiles.add(shell);
+			Render.addSprite(shell);
 			time = 0;
 
 	}
@@ -64,7 +62,6 @@ public class Cannon extends Attachable {
 		super.update(x, y, rotation);
 		fireFX.setPosition(x, y + hull.getHeight() / 1.5f);
 		fireFX.setRotation(rotation);
-		
 		if (time > fireEffectTime) {
 			Render.removeSprite(fireFX.getID()); //Yes, we can remove it directly with fireFX.remove();. No, we won't.
 			

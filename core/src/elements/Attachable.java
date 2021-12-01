@@ -1,8 +1,5 @@
 package elements;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
 import utilities.Config;
 import utilities.Render;
 
@@ -11,13 +8,13 @@ public abstract class Attachable extends ClientSprite implements Updateable {
 	public String objectType; 
 	public Attachable(String texture) {
 		super(texture);
-		centrarImagen();
+		centerImage();
 		Render.addUpdateable(this);
 		Render.addSprite(this);
 		
 	}
 	
-	private void centrarImagen() {
+	private void centerImage() {
 		
 		setSize(getWidth()/2/Config.PPM,getHeight()/2/Config.PPM);
 		float orgX = getWidth()/2;
@@ -25,13 +22,9 @@ public abstract class Attachable extends ClientSprite implements Updateable {
 	}
 
 	public void update( float x, float y,float rotation) {
-		setX(x); // TODO: Setter and getter for this on the Resources.java
+		setX(x); 
 		setY(y);
 		setRotation(rotation);
 	}
 	
-	public void modifyTexture(Texture texture) {
-		//this.texture.dispose(); //Gets rid of the old texture.
-		setTexture(texture);
-	}
 }
