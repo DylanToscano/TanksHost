@@ -150,6 +150,7 @@ public class Tank implements Updateable{
 	}
 
 	public void destroy() {
+		Explosion explosion = new Explosion(hull.getX(),hull.getY());
 		for (int i = 0; i < objects.length; i++) {
 			if (objects[i] != null) {
 				objects[i].remove();
