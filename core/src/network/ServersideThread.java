@@ -223,7 +223,6 @@ public class ServersideThread extends Thread {
 	}
 
 	public void removeClient(int id) {
-		System.out.println("CLIENT REMOVED: " + clients.get(id).username);
 		removeTank(clients.get(id));
 		clients.remove(id);
 
@@ -348,7 +347,6 @@ public class ServersideThread extends Thread {
 
 			}
 		});
-		System.out.println("Remaining tanks: "+Render.tanks.size());
 		if (Render.tanks.size() == 1) {
 			broadcast(NetworkCodes.ENDMATCH + Render.tanks.get(0).owner.username);
 		}
