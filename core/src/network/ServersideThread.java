@@ -8,7 +8,6 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bws.tankshost.ServerConfig;
 
 import elements.ClientSprite;
@@ -85,7 +84,7 @@ public class ServersideThread extends Thread {
 	private void checkTimeout() {
 		for (int i = 0; i < clients.size(); i++) {
 			int tickDifference = (int) (serverTick - clients.get(i).lastTick);
-			if (tickDifference > 150) { // If the user didn't pong or send messages for 200 ticks, disconnect.
+			if (tickDifference > 150) { // If the user didn't pong or send messages for 150 ticks, disconnect.
 				disconnectClient(i);
 			}
 		}
@@ -128,6 +127,7 @@ public class ServersideThread extends Thread {
 																			// arguments (args) of the network message.
 
 		if (!networkCode.equals(NetworkCodes.CONNECT) && !isClient(packet.getAddress())) {
+			
 			sendMessage(NetworkCodes.FORBIDDEN + "Not connected to server.", packet.getAddress(), packet.getPort());
 			return;
 		}
@@ -160,6 +160,7 @@ public class ServersideThread extends Thread {
 		if (!networkCode.equals(NetworkCodes.DISCONNECT) && clients.size() > 0) {
 			ServerClient currentClient = clients.get(getClientID(packet.getAddress()));
 			currentClient.lastTick = serverTick; // acknowledge the client who ticked the server.
+			System.out.println(currentClient.username+": "+(currentClient.lastTick-serverTick));
 		}
 
 	}
@@ -201,7 +202,7 @@ public class ServersideThread extends Thread {
 
 	public boolean usernameInUse(String username) {
 		for (int i = 0; i < clients.size(); i++) {
-			if (clients.get(i).username == username) {
+			if (clients.get(i).username.equals(username)) {
 				return true;
 			}
 		}
@@ -214,12 +215,15 @@ public class ServersideThread extends Thread {
 		newClient.username = username;
 		clients.add(newClient);
 		createTank(newClient);
+		for (int i = 0; i < clients.size(); i++) {
+			System.out.println(clients.get(i).username);
+		}
 		return newClient;
 
 	}
 
 	public void removeClient(int id) {
-		// TODO: Consider some kind of dispose() ?
+		System.out.println("CLIENT REMOVED: "+clients.get(id).username);
 		removeTank(clients.get(id));
 		clients.remove(id);
 
@@ -232,13 +236,12 @@ public class ServersideThread extends Thread {
 
 	//////////// processMessage functions//////////////////////////////////////////
 	private void handleConnection(DatagramPacket packet, String args) {
-		if (isClient(packet.getAddress())) {// If the client was already connected, just tell them they connected so
-											// they can sync.
+		if (isClient(packet.getAddress())) {// If the client was already connected.
 			sendMessage(NetworkCodes.CONNECT + "Already connected.", packet.getAddress(), packet.getPort());
 		} else if (usernameInUse(args)) {
 			sendMessage(NetworkCodes.ERROR + "Username in use.", packet.getAddress(), packet.getPort());
-		} else if (connectedClientCounter < ServerConfig.MAX_CLIENTS) {
-			ServerClient newClient = addClient(packet.getAddress(), packet.getPort(), args);
+		} else if (clients.size() < ServerConfig.MAX_CLIENTS) {
+			addClient(packet.getAddress(), packet.getPort(), args);
 			sendMessage(NetworkCodes.CONNECT + "Connected as " + args, packet.getAddress(), packet.getPort());
 			System.out.println("[SERVER] " + args + " connected.");
 		} else {
@@ -247,7 +250,7 @@ public class ServersideThread extends Thread {
 	}
 
 	private void handleDisconnection(DatagramPacket packet, String msg) {
-		removeClient(getClientID(packet.getAddress()));
+		disconnectClient(getClientID(packet.getAddress()) );
 	}
 
 	private void handleUserInput(DatagramPacket packet, String packagedArgs) { // packaged args is the string with
