@@ -43,7 +43,6 @@ public class ServersideThread extends Thread {
 			serverCreated = true;
 			return true; // server created.
 		} catch (SocketException e) {
-			// e.printStackTrace(); too much spam
 			System.out.println("[SERVER] Unable to create socket on port " + socketPort + ".");
 			return false; // unable to create
 		}
@@ -71,7 +70,6 @@ public class ServersideThread extends Thread {
 			socketPort++;
 			startServer();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
 			startServer();// retry anyways.
 		}
 		// }//do not continue until it is created.
@@ -118,7 +116,6 @@ public class ServersideThread extends Thread {
 				if (!socket.isClosed()) { // ignore error if the socket was intentionally closed.
 					System.out.println("[SERVER] Socket Exception: Could not receive packet.");
 				}
-				// e.printStackTrace();
 			}
 		} while (!end);
 	}
@@ -166,7 +163,6 @@ public class ServersideThread extends Thread {
 		}
 
 		if (!networkCode.equals(NetworkCodes.DISCONNECT) && clients.size() > 0) {
-			System.out.println(getClientID(packet.getAddress()));
 			ServerClient currentClient = clients.get(getClientID(packet.getAddress()));
 			currentClient.lastTick = serverTick; // acknowledge the client who ticked the server.
 		}
@@ -179,7 +175,6 @@ public class ServersideThread extends Thread {
 		try {
 			socket.send(packet);
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -278,7 +273,8 @@ public class ServersideThread extends Thread {
 
 	private String getSpriteData(ClientSprite sprite) {
 		return sprite.getRoute() + "-" + sprite.getID() + "-" + sprite.getX() + "-" + sprite.getY() + "-"
-				+ sprite.getRotation() + "-" + sprite.getWidth() + "-" + sprite.getHeight();
+				+ sprite.getRotation() + "-" + sprite.getWidth() + "-" + sprite.getHeight() + "-" + sprite.getOriginX()
+				+ "-" + sprite.getOriginY();
 	}
 
 	public void addSprite(ClientSprite sprite) {

@@ -57,7 +57,6 @@ public abstract class Render {
 						renderList.remove(i);
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
 				if (renderList.get(i).isRemoved()) {
 					renderList.remove(i);

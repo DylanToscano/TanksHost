@@ -37,7 +37,6 @@ public class Tank implements Updateable{
 		doMovement();
 		doCannon();
 		updateObjects();// Update other sprites attached to this tank, such as cannon.
-		// System.out.println("ACCEL: "+acceleration+" | SPEED: "+speed);
 	}
 
 	public void setPosition(float x, float y) {

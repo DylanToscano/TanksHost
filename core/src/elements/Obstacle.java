@@ -65,7 +65,6 @@ public class Obstacle extends Entity2D {
 		b2body.createFixture(fdef).setUserData(this);
 	}
 	public void correct() {
-		System.out.println(corrections);
 		
 			if(vertical) {
 				b2body.setLinearVelocity(1,0);

@@ -52,7 +52,6 @@ public abstract class Buff extends Entity2D {
 		b2body.createFixture(fdef).setUserData(this);
 	}
 	public  void pick(){
-		System.out.println("se agarro el buff uwu");
 		picked = true;
 	}
 

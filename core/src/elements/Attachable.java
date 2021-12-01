@@ -25,7 +25,6 @@ public abstract class Attachable extends ClientSprite implements Updateable {
 		
 		setSize(getWidth()/2/Config.PPM,getHeight()/2/Config.PPM);
 		float orgX = getWidth()/2;
-		System.out.println(orgX);
 		setOrigin(orgX, 0);
 	}
 

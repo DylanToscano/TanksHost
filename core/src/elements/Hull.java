@@ -164,13 +164,10 @@ public class Hull extends Entity2D {
 		float angle = 0;
 		angle = calculateAngle(p);
 		if (angle < 45 || angle > 315) {
-			System.out.println("arriba");
 			hp -= p.dmg * 0.75;
 		} else if (angle > 135 && angle < 225) {
-			System.out.println("abajo");
 			hp -= p.dmg * 3;
 		} else {
-			System.out.println("costado");
 			hp -= p.dmg;
 		}
 

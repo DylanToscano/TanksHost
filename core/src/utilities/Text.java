@@ -32,9 +32,7 @@ public class Text {
 
 		FreeTypeFontGenerator generador = new FreeTypeFontGenerator(Gdx.files.internal(rutaFuente));
 		FreeTypeFontGenerator.FreeTypeFontParameter parametros = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		System.out.println(dimension);
 		parametros.size = (int) (100 * dimension);
-		System.out.println(parametros.size);
 		parametros.color = color;
 		if (sombra) {
 			parametros.shadowColor = Color.BLACK;
