@@ -104,7 +104,7 @@ public class ServerScreen implements Screen {
 		// sets whats the renderer gonna draw, that shows in camera
 		renderer.setView(camera); 
 		
-//		crearBuffs();
+		crearBuffs();
 	}
 
 //	private void correctObstacle() {  WIP TO NO TOUCH

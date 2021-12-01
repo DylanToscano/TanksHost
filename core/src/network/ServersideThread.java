@@ -321,6 +321,8 @@ public class ServersideThread extends Thread {
 	}
 
 	public void doExplosion(float x, float y) {
+		x = (x<0)?0:x;
+		y = (y<0)?0:y;
 		broadcast(NetworkCodes.EXPLOSION + x + "-" + y);
 	}
 

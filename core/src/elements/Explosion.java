@@ -33,8 +33,8 @@ public class Explosion extends Entity2D implements Updateable{
 		Render.addUpdateable(this);
 		Render.addSprite(this);
 		counter = 0;
-		
-		Render.getServerThread().doExplosion(x, y);
+		setSize(getRegionWidth()/Config.PPM,getRegionHeight()/Config.PPM); // it works, 
+		Render.getServerThread().doExplosion(x-getWidth()/2, y-getHeight()/2);
 	}
 	
 	public void update() {

@@ -19,10 +19,10 @@ public class Obstacle extends Entity2D {
 		super(Resources.BARRICADE);
 		this.world = Render.world;
 		setSize(getTexture().getWidth()/2/Config.PPM,getTexture().getHeight()/2/Config.PPM);
-//		setPosition(Functions.randomFloat(10,50)*15/Config.PPM,Functions.randomFloat(10,50)*15/Config.PPM);
+		setPosition(Functions.randomFloat(10,50)*15/Config.PPM,Functions.randomFloat(10,50)*15/Config.PPM);
 		vertical = (Functions.randomInt(1,2)==1)?false:true;
-		vertical = true;
-		setPosition(3,3);
+//		vertical = true;
+//		setPosition(3,3);
 		setOrigin(0,0);	
 		if(vertical) {
 			setRotation(90);
