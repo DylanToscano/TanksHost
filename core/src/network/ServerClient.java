@@ -8,6 +8,7 @@ public class ServerClient extends Client{
 	
 	public InetAddress IP;
 	public int port;
+	public long firstTick;
 	public long lastTick;
 	
 	public ServerClient(InetAddress ip, int port) {

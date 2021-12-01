@@ -148,7 +148,7 @@ public class ServersideThread extends Thread {
 			break;
 		///
 		case NetworkCodes.PONG:
-
+			checkRenderDesync(clients.get(getClientID(packet.getAddress())),args);
 			break;
 		///
 		default:
@@ -211,11 +211,9 @@ public class ServersideThread extends Thread {
 		ServerClient newClient;
 		newClient = new ServerClient(ip, port);
 		newClient.username = username;
+		newClient.firstTick = serverTick;
 		clients.add(newClient);
 		createTank(newClient);
-		for (int i = 0; i < clients.size(); i++) {
-			System.out.println(clients.get(i).username);
-		}
 		return newClient;
 
 	}
@@ -289,7 +287,18 @@ public class ServersideThread extends Thread {
 			broadcast(NetworkCodes.UPDATESPRITE + getSpriteData(sprite));
 		}
 	}
-
+	
+	private void checkRenderDesync(ServerClient client,String arg) {
+		if(serverTick - client.firstTick > 100) {
+			if(Integer.parseInt(arg) != Render.renderList.size()) {
+				sendMessage(NetworkCodes.RENDERSYNC,client.IP,client.port);
+				for (int i = 0; i < Render.renderList.size(); i++) {
+					sendMessage(NetworkCodes.NEWSPRITE+getSpriteData(Render.renderList.get(i)),client.IP,client.port);
+				}
+			}
+		}
+		
+	}
 	public void doExplosion(float x, float y) {
 		broadcast(NetworkCodes.EXPLOSION + x + "-" + y);
 	}
