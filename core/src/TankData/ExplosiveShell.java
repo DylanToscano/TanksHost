@@ -9,7 +9,7 @@ import utilities.Resources;
 public class ExplosiveShell extends Projectile{
 	float ExplosiveDmg;
 	public ExplosiveShell(float x, float y, Hull hull) {
-		super(x, y, hull, Resources.EXPLOSIVESHELL, 2);
+		super(x, y, hull, Resources.EXPLOSIVESHELL, 8);
 		dmg = 50;
 		
 	
