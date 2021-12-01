@@ -92,11 +92,13 @@ public class Tank implements Updateable{
 	public void rotate(float degrees) {
 		hull.rotate(degrees);
 		hull.rotation += degrees;
+		
 		if (hull.rotation >= 360) {
 			hull.rotation = 0;
-		} else if (hull.rotation < 0) {
+		} else if (hull.rotation <= 0) {
 			hull.rotation = 359;
 		}
+		hull.setRotation(hull.rotation);
 	}
 
 	///////////// Cannon-related functions.
