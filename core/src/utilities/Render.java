@@ -12,10 +12,10 @@ import elements.BarrelEx;
 import elements.Buff;
 import elements.ClientSprite;
 import elements.Explosion;
+import elements.Hull;
 import elements.Projectile;
 import elements.Tank;
 import elements.Updateable;
-import network.ServerClient;
 import network.ServersideThread;
 
 public abstract class Render {
@@ -56,6 +56,10 @@ public abstract class Render {
 						renderList.remove(i);
 					} else if (renderList.get(i) instanceof BarrelEx && ((BarrelEx) renderList.get(i)).hit) {
 						((BarrelEx) renderList.get(i)).disappear();
+						serversideThread.removeSprite(renderList.get(i));
+						renderList.remove(i);
+					}else if (renderList.get(i) instanceof Hull && ((Hull) renderList.get(i)).getHp() ==0) {
+						((Hull) renderList.get(i)).disappear();
 						serversideThread.removeSprite(renderList.get(i));
 						renderList.remove(i);
 					} else if (renderList.get(i).isRemoved()) {
