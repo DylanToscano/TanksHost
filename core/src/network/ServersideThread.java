@@ -211,14 +211,13 @@ public class ServersideThread extends Thread {
 		return false;
 	}
 
-	public ServerClient addClient(InetAddress ip, int port, String username) {
+	public void addClient(InetAddress ip, int port, String username) {
 		ServerClient newClient;
 		newClient = new ServerClient(ip, port);
 		newClient.username = username;
 		newClient.lastSync = serverTick;
 		clients.add(newClient);
 		createTank(newClient);
-		return newClient;
 
 	}
 
