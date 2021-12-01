@@ -295,7 +295,7 @@ public class ServersideThread extends Thread {
 	}
 
 //////TANK MANAGEMENT
-	public static void createTank(final ServerClient client) {
+	public void createTank(final ServerClient client) {
 		Gdx.app.postRunnable(new Runnable() {
 			public void run() {
 				Render.tanks.add(new Tank(client));
@@ -304,7 +304,7 @@ public class ServersideThread extends Thread {
 
 	}
 
-	public static void removeTank(final Client client) {
+	public void removeTank(final Client client) {
 		Gdx.app.postRunnable(new Runnable() {
 			public void run() {
 				for (int i = 0; i < Render.tanks.size(); i++) {
@@ -314,11 +314,12 @@ public class ServersideThread extends Thread {
 						break;
 					}
 				}
-				if(Render.tanks.size() == 1) {
-					Client winner = Render.tanks.get(0).owner;
-				}
+
 			}
 		});
+		if(Render.tanks.size() == 1) {
+			broadcast(NetworkCodes.ENDMATCH+Render.tanks.get(0).owner.username); 
+		}
 	}
 
 }
