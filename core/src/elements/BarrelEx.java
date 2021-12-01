@@ -21,7 +21,7 @@ public class BarrelEx extends Entity2D{
 //		setPosition(3,3);
 		createBody();
 		fixtureDef();
-		Render.addSprite(this);
+
 	}
 	
 	@Override

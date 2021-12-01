@@ -23,7 +23,6 @@ public abstract class Buff extends Entity2D {
 		this.world = Render.world;
 		createBody();
 		fixtureDef();
-		Render.addSprite(this);
 		
 	}
 

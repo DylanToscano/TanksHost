@@ -269,7 +269,7 @@ public class ServersideThread extends Thread {
 
 	private String getSpriteData(ClientSprite sprite) {
 
-		return sprite.getRoute() + "-" + sprite.getID() + "-" + sprite.getX() + "-" + sprite.getY() + "-"
+		return sprite.getRoute() + "-" + sprite.getID() + "-" + ((sprite.getX()<0)?0:sprite.getX()) + "-" + ((sprite.getY()<0)?0:sprite.getY()) + "-"
 				+ sprite.getRotation() + "-" + sprite.getWidth() + "-" + sprite.getHeight() + "-" + sprite.getOriginX()
 				+ "-" + sprite.getOriginY();
 
@@ -320,6 +320,8 @@ public class ServersideThread extends Thread {
 	}
 
 	public void doExplosion(float x, float y) {
+		x = (x<0)?0:x;
+		y = (y<0)?0:y;
 		broadcast(NetworkCodes.EXPLOSION + x + "-" + y);
 	}
 
