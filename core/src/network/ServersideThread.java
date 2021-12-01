@@ -314,6 +314,9 @@ public class ServersideThread extends Thread {
 						break;
 					}
 				}
+				if(Render.tanks.size() == 1) {
+					Client winner = Render.tanks.get(0).owner;
+				}
 			}
 		});
 	}
