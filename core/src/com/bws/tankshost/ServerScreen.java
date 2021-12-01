@@ -12,6 +12,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import elements.BarrelEx;
+import elements.Buff;
+import elements.CooldownBuff;
+import elements.ExplosiveBuff;
+import elements.Obstacle;
+import elements.SpeedBuff;
 import network.Serverside;
 import tiledMapObjects.World2D;
 import tiledMapObjects.WorldListener;
@@ -70,7 +76,15 @@ public class ServerScreen implements Screen {
 
 		b = Render.batch;
 		gamePort.getCamera().position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-
+		Buff buff1 = new CooldownBuff(); 
+		Buff buff2 = new ExplosiveBuff(); 
+		Buff buff3 = new SpeedBuff(); 
+		Obstacle obstacle1 = new Obstacle();
+		Obstacle obstacle2 = new Obstacle();
+		Obstacle obstacle3 = new Obstacle();
+		BarrelEx barrel1 = new BarrelEx();
+		BarrelEx barrel2 = new BarrelEx();
+		BarrelEx barrel3 = new BarrelEx();
 	}
 
 	@Override

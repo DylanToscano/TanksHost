@@ -31,6 +31,7 @@ public class Obstacle extends Entity2D {
 //		setPosition(3.3f,3.3f);
 		createBody();
 		fixtureDef();
+		Render.addSprite(this);
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class Obstacle extends Entity2D {
 		b2body.createFixture(fdef).setUserData(this);
 	}
 	public void correct() {
-		
+		//WIP
 			if(vertical) {
 				b2body.setLinearVelocity(1,0);
 				setPosition((b2body.getPosition().x + getHeight()/2), // 
