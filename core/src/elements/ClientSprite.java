@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class ClientSprite extends Sprite {
 	//Yes. We made an entire class just to add an int, because Marconi.
 	private int id;
-	private float rotation = 0;
+
 	String textureRoute;
 	private boolean removed;
 	
@@ -40,12 +40,9 @@ public class ClientSprite extends Sprite {
 	@Override
 	public void setRotation(float rotation) {
 		super.setRotation(rotation);
-		this.rotation = rotation;
 	}
 	
-	public float getRotation() {
-		return rotation;
-	}
+
 	
 	
 }
