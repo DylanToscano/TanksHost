@@ -68,7 +68,7 @@ public class ServersideThread extends Thread {
 			socketPort++;
 			startServer();
 		} catch (InterruptedException e) {
-			//startServer();// retry anyways.
+			// startServer();// retry anyways.
 		}
 	}
 
@@ -91,7 +91,7 @@ public class ServersideThread extends Thread {
 	private void ping() {
 		if (serverTick - lastPing >= ServerConfig.PING_RATE) {// If there's been enough ticks between last ping.
 			lastPing = serverTick;
-			broadcast(NetworkCodes.PING+Render.renderList.size()+"-"+serverTick);
+			broadcast(NetworkCodes.PING + Render.renderList.size() + "-" + serverTick);
 		}
 	}
 
@@ -126,7 +126,7 @@ public class ServersideThread extends Thread {
 																			// arguments (args) of the network message.
 
 		if (!networkCode.equals(NetworkCodes.CONNECT) && !isClient(packet.getAddress())) {
-			
+
 			sendMessage(NetworkCodes.FORBIDDEN + "Not connected to server.", packet.getAddress(), packet.getPort());
 			return;
 		}
@@ -148,7 +148,11 @@ public class ServersideThread extends Thread {
 			break;
 		///
 		case NetworkCodes.PONG:
-			checkRenderDesync(clients.get(getClientID(packet.getAddress())),args);
+			checkRenderDesync(clients.get(getClientID(packet.getAddress())), args);
+			break;
+		///
+		case NetworkCodes.RENDERSYNC:
+				renderResync(clients.get(getClientID(packet.getAddress())),args);
 			break;
 		///
 		default:
@@ -211,7 +215,7 @@ public class ServersideThread extends Thread {
 		ServerClient newClient;
 		newClient = new ServerClient(ip, port);
 		newClient.username = username;
-		newClient.firstTick = serverTick;
+		newClient.lastSync = serverTick;
 		clients.add(newClient);
 		createTank(newClient);
 		return newClient;
@@ -219,7 +223,7 @@ public class ServersideThread extends Thread {
 	}
 
 	public void removeClient(int id) {
-		System.out.println("CLIENT REMOVED: "+clients.get(id).username);
+		System.out.println("CLIENT REMOVED: " + clients.get(id).username);
 		removeTank(clients.get(id));
 		clients.remove(id);
 
@@ -246,7 +250,7 @@ public class ServersideThread extends Thread {
 	}
 
 	private void handleDisconnection(DatagramPacket packet, String msg) {
-		disconnectClient(getClientID(packet.getAddress()) );
+		disconnectClient(getClientID(packet.getAddress()));
 	}
 
 	private void handleUserInput(DatagramPacket packet, String packagedArgs) { // packaged args is the string with
@@ -266,11 +270,11 @@ public class ServersideThread extends Thread {
 	}
 
 	private String getSpriteData(ClientSprite sprite) {
-	
+
 		return sprite.getRoute() + "-" + sprite.getID() + "-" + sprite.getX() + "-" + sprite.getY() + "-"
 				+ sprite.getRotation() + "-" + sprite.getWidth() + "-" + sprite.getHeight() + "-" + sprite.getOriginX()
 				+ "-" + sprite.getOriginY();
-		
+
 	}
 
 	public void addSprite(ClientSprite sprite) {
@@ -287,18 +291,36 @@ public class ServersideThread extends Thread {
 			broadcast(NetworkCodes.UPDATESPRITE + getSpriteData(sprite));
 		}
 	}
+
+	private void checkRenderDesync(ServerClient client, String arg) {
+		if (serverTick - client.lastSync > ServerConfig.PING_RATE * 2) {
+			if(Integer.parseInt(arg) > Render.renderList.size()) { //If the client has sprites it should remove.
+				sendMessage(NetworkCodes.RENDERSYNC,client.IP,client.port); //Request a list of their sprite IDs.
+			}
+		}
+	}
 	
-	private void checkRenderDesync(ServerClient client,String arg) {
-		if(serverTick - client.firstTick > 100) {
-			if(Integer.parseInt(arg) != Render.renderList.size()) {
-				sendMessage(NetworkCodes.RENDERSYNC,client.IP,client.port);
-				for (int i = 0; i < Render.renderList.size(); i++) {
-					sendMessage(NetworkCodes.NEWSPRITE+getSpriteData(Render.renderList.get(i)),client.IP,client.port);
+	private void renderResync(ServerClient client, String argumentString) {
+		String[] args = argumentString.split("-");//Args will be an array of all the IDs in the client renderlist.
+		ArrayList<Integer> desyncedIDs = new ArrayList<Integer>();//An array of IDs we'll tell the client to remove.
+		for(int i=0; i<args.length; i++) {
+			boolean exists = false;
+			for(int x=0; x<Render.renderList.size(); x++) {
+				if(Integer.parseInt(args[i]) == Render.renderList.get(x).getID()) {
+					exists = true;
 				}
 			}
+			if (!exists) { //If a client sprite Id was not found, add it to the desynced list.
+				desyncedIDs.add(Integer.parseInt(args[i]));
+			}
+		}
+		///Now that we have an arraylist of desynced IDs, desync them all.
+		for (int i = 0; i < desyncedIDs.size(); i++) {
+			sendMessage(NetworkCodes.REMOVESPRITE+desyncedIDs.get(i),client.IP,client.port);
 		}
 		
 	}
+
 	public void doExplosion(float x, float y) {
 		broadcast(NetworkCodes.EXPLOSION + x + "-" + y);
 	}
@@ -326,8 +348,8 @@ public class ServersideThread extends Thread {
 
 			}
 		});
-		if(Render.tanks.size() == 1) {
-			broadcast(NetworkCodes.ENDMATCH+Render.tanks.get(0).owner.username); 
+		if (Render.tanks.size() == 1) {
+			broadcast(NetworkCodes.ENDMATCH + Render.tanks.get(0).owner.username);
 		}
 	}
 
