@@ -77,8 +77,11 @@ public class Projectile extends Entity2D {
 	}
 
 	public void explode() {
-		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		if(explode) {
+			return;
+		}
 		explode = true;
+		
 	}
 
 	public void setDegrees(float degrees) {
