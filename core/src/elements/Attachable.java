@@ -7,12 +7,8 @@ import utilities.Config;
 import utilities.Render;
 
 public abstract class Attachable extends ClientSprite implements Updateable {
-	
-
 	Hull hull;
 	public String objectType; 
-	
-	
 	public Attachable(String texture) {
 		super(texture);
 		centrarImagen();
@@ -31,9 +27,7 @@ public abstract class Attachable extends ClientSprite implements Updateable {
 	public void update( float x, float y,float rotation) {
 		setX(x); // TODO: Setter and getter for this on the Resources.java
 		setY(y);
-		
 		setRotation(rotation);
-		
 	}
 	
 	public void modifyTexture(Texture texture) {
