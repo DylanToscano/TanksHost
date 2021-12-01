@@ -154,6 +154,7 @@ public class Tank implements Updateable{
 		for (int i = 0; i < objects.length; i++) {
 			if (objects[i] != null) {
 				objects[i].remove();
+				System.out.println("se removio los attachables");
 			}
 		}
 		hull.remove();

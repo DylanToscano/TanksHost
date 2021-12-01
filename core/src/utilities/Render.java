@@ -59,7 +59,7 @@ public abstract class Render {
 						serversideThread.removeSprite(renderList.get(i));
 						renderList.remove(i);
 					}else if (renderList.get(i) instanceof Hull && ((Hull) renderList.get(i)).getHp() ==0) {
-						((Hull) renderList.get(i)).getOwner().destroy();
+						((Hull) renderList.get(i)).getParent().destroy();
 						serversideThread.removeSprite(renderList.get(i));
 						renderList.remove(i);
 					} else if (renderList.get(i).isRemoved()) {

@@ -206,7 +206,7 @@ public class Hull extends Entity2D {
 		return angle;
 	}
 
-	public Tank getOwner() {
+	public Tank getParent() {
 		return parent;
 	}
 }
