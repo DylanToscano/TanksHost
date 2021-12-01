@@ -27,6 +27,7 @@ public abstract class Entity2D extends ClientSprite{
 		super();
 	}
 	public void disappear() {
+		if(b2body == null) {return;} //failsafe
 		Render.world.destroyBody(b2body);
 		b2body = null;
 	}

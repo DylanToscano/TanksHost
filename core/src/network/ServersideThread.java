@@ -12,6 +12,7 @@ import com.bws.tankshost.ServerConfig;
 
 import elements.ClientSprite;
 import elements.Tank;
+import input.Client;
 import input.InputKeys;
 import utilities.Render;
 
@@ -303,7 +304,7 @@ public class ServersideThread extends Thread {
 
 	}
 
-	public static void removeTank(final ServerClient client) {
+	public static void removeTank(final Client client) {
 		Gdx.app.postRunnable(new Runnable() {
 			public void run() {
 				for (int i = 0; i < Render.tanks.size(); i++) {

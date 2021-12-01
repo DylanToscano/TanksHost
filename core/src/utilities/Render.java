@@ -25,7 +25,7 @@ public abstract class Render {
 	public static ArrayList<Tank> tanks = new ArrayList<Tank>();
 	public static ArrayList<ClientSprite> renderList = new ArrayList<ClientSprite>();
 	public static ArrayList<Updateable> updateList = new ArrayList<Updateable>();
-	static ServersideThread serversideThread;
+	private static ServersideThread serversideThread;
 
 	public static void render() { // Render everything in the renderList
 		batch.begin();
@@ -59,7 +59,7 @@ public abstract class Render {
 						serversideThread.removeSprite(renderList.get(i));
 						renderList.remove(i);
 					}else if (renderList.get(i) instanceof Hull && ((Hull) renderList.get(i)).getHp() ==0) {
-						((Hull) renderList.get(i)).getParent().destroy();
+						serversideThread.removeTank(((Hull) renderList.get(i)).getParent().owner);
 						serversideThread.removeSprite(renderList.get(i));
 						renderList.remove(i);
 					} else if (renderList.get(i).isRemoved()) {
