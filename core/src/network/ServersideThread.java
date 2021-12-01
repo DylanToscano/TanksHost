@@ -223,7 +223,6 @@ public class ServersideThread extends Thread {
 	}
 
 	public void removeClient(int id) {
-		System.out.println("CLIENT REMOVED: " + clients.get(id).username);
 		removeTank(clients.get(id));
 		clients.remove(id);
 
