@@ -28,7 +28,7 @@ public class ServersideThread extends Thread {
 	int socketPort = ServerConfig.DEFAULT_PORT;
 
 	private int connectedClientCounter = 0;
-	private ArrayList<ServerClient> clients;
+	private ArrayList<ServerClient> clients = new ArrayList<ServerClient>();
 
 	public ServersideThread() {
 		serverCreated = startServer();
@@ -81,7 +81,7 @@ public class ServersideThread extends Thread {
 		checkTimeout();
 		syncSpriteData();
 		ping();
-		//syncSpriteData();
+		// syncSpriteData();
 		serverTick++;
 	}
 
@@ -131,7 +131,7 @@ public class ServersideThread extends Thread {
 		String args = msg.substring(NetworkCodes.CODELENGTH, msg.length()); // Everything after the network code are the
 																			// arguments (args) of the network message.
 
-		if (!isClient(packet.getAddress()) && !networkCode.equals(NetworkCodes.CONNECT)) {
+		if (!networkCode.equals(NetworkCodes.CONNECT) && !isClient(packet.getAddress())) {
 			sendMessage(NetworkCodes.FORBIDDEN + "Not connected to server.", packet.getAddress(), packet.getPort());
 			return;
 		}
@@ -157,7 +157,7 @@ public class ServersideThread extends Thread {
 			break;
 		///
 		case NetworkCodes.RENDERSYNC:
-			
+
 			break;
 		///
 		default:
@@ -165,7 +165,8 @@ public class ServersideThread extends Thread {
 			break;
 		}
 
-		if (!networkCode.equals(NetworkCodes.DISCONNECT)) {
+		if (!networkCode.equals(NetworkCodes.DISCONNECT) && clients.size() > 0) {
+			System.out.println(getClientID(packet.getAddress()));
 			ServerClient currentClient = clients.get(getClientID(packet.getAddress()));
 			currentClient.lastTick = serverTick; // acknowledge the client who ticked the server.
 		}
@@ -219,21 +220,17 @@ public class ServersideThread extends Thread {
 
 	public ServerClient addClient(InetAddress ip, int port, String username) {
 		ServerClient newClient;
-		for (int i = 0; i < clients.size(); i++) {
-			if (clients.get(i) == null) {
-				newClient = new ServerClient(ip, port);
-				newClient.username = username;
-				clients.add(newClient);
-				createTank(newClient);
-				return newClient;
-			}
-		}
-		return null;
+		newClient = new ServerClient(ip, port);
+		newClient.username = username;
+		clients.add(newClient);
+		createTank(newClient);
+		return newClient;
 
 	}
 
 	public void removeClient(int id) {
 		// TODO: Consider some kind of dispose() ?
+		removeTank(clients.get(id));
 		clients.remove(id);
 
 	}
@@ -266,7 +263,7 @@ public class ServersideThread extends Thread {
 	private void handleUserInput(DatagramPacket packet, String packagedArgs) { // packaged args is the string with
 																				// multiple arguments divided with /
 		String[] args = packagedArgs.split("-");
-		ServerClient requestingClient = clients.get( getClientID(packet.getAddress()));
+		ServerClient requestingClient = clients.get(getClientID(packet.getAddress()));
 		// Below: Modify the user input keys according to the network message. (huh?)
 		requestingClient.inputs.replace(InputKeys.valueOf(args[0]), !Boolean.parseBoolean(args[1]),
 				Boolean.parseBoolean(args[1]));
@@ -324,15 +321,12 @@ public class ServersideThread extends Thread {
 	public static void removeTank(final ServerClient client) {
 		Gdx.app.postRunnable(new Runnable() {
 			public void run() {
-				Tank removedTank = null;
 				for (int i = 0; i < Render.tanks.size(); i++) {
 					if (Render.tanks.get(i).owner == client) {
-						removedTank = Render.tanks.get(i);
+						Render.tanks.get(i).destroy();
+						Render.tanks.remove(i);
 						break;
 					}
-				}
-				if (removedTank != null) {
-
 				}
 			}
 		});

@@ -153,9 +153,4 @@ public class Tank implements Updateable{
 
 	}
 
-	public void correction(float x, float y) {
-		correctionX = x;
-		correctionY = y;
-	}
-
 }
