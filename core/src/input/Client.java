@@ -8,6 +8,7 @@ import elements.Tank;
 public class Client {
 	
 	public String username;
+	public long firstTick;
 	Tank tank;
 	public Map<InputKeys, Boolean>  inputs = new HashMap<InputKeys, Boolean>();
 

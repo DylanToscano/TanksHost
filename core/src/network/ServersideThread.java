@@ -79,7 +79,6 @@ public class ServersideThread extends Thread {
 		checkTimeout();
 		syncSpriteData();
 		ping();
-		// syncSpriteData();
 		serverTick++;
 	}
 
@@ -94,7 +93,7 @@ public class ServersideThread extends Thread {
 
 	private void ping() {
 		if (serverTick - lastPing >= ServerConfig.PING_RATE) {// If there's been enough ticks between last ping.
-			broadcast(NetworkCodes.PING + Render.renderList.size());
+			broadcast(NetworkCodes.PING+Render.renderList.size()+"-"+serverTick);
 		}
 	}
 
@@ -154,7 +153,7 @@ public class ServersideThread extends Thread {
 			break;
 		///
 		case NetworkCodes.RENDERSYNC:
-
+			syncRenderList(clients.get(getClientID(packet.getAddress())));
 			break;
 		///
 		default:
@@ -217,6 +216,7 @@ public class ServersideThread extends Thread {
 		ServerClient newClient;
 		newClient = new ServerClient(ip, port);
 		newClient.username = username;
+		newClient.firstTick = serverTick;
 		clients.add(newClient);
 		createTank(newClient);
 		return newClient;
@@ -293,6 +293,7 @@ public class ServersideThread extends Thread {
 	}
 
 	private void syncRenderList(ServerClient client) {// For when a player's renderList is desynced.
+			sendMessage(NetworkCodes.RENDERSYNC+serverTick,client.IP,client.port);
 		for (int i = 0; i < Render.renderList.size(); i++) {
 			ClientSprite sprite = Render.renderList.get(i);
 			sendMessage(NetworkCodes.NEWSPRITE + getSpriteData(sprite), client.IP, client.port);
