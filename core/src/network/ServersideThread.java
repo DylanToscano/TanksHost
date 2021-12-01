@@ -348,7 +348,6 @@ public class ServersideThread extends Thread {
 
 			}
 		});
-		System.out.println("Remaining tanks: "+Render.tanks.size());
 		if (Render.tanks.size() == 1) {
 			broadcast(NetworkCodes.ENDMATCH + Render.tanks.get(0).owner.username);
 		}
