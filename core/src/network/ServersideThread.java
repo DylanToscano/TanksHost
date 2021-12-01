@@ -131,7 +131,7 @@ public class ServersideThread extends Thread {
 			sendMessage(NetworkCodes.FORBIDDEN + "Not connected to server.", packet.getAddress(), packet.getPort());
 			return;
 		}
-		if (!networkCode.equals(NetworkCodes.PONG) && !networkCode.equals(NetworkCodes.RENDERSYNC)) {
+		if (!networkCode.equals(NetworkCodes.PONG)) {
 			System.out.println("[SERVER RECEIVED]" + msg);
 		}
 
@@ -150,10 +150,6 @@ public class ServersideThread extends Thread {
 		///
 		case NetworkCodes.PONG:
 
-			break;
-		///
-		case NetworkCodes.RENDERSYNC:
-			syncRenderList(clients.get(getClientID(packet.getAddress())));
 			break;
 		///
 		default:
@@ -216,7 +212,6 @@ public class ServersideThread extends Thread {
 		ServerClient newClient;
 		newClient = new ServerClient(ip, port);
 		newClient.username = username;
-		newClient.firstTick = serverTick;
 		clients.add(newClient);
 		createTank(newClient);
 		return newClient;
@@ -292,15 +287,6 @@ public class ServersideThread extends Thread {
 			ClientSprite sprite = Render.renderList.get(i);
 			broadcast(NetworkCodes.UPDATESPRITE + getSpriteData(sprite));
 		}
-	}
-
-	private void syncRenderList(ServerClient client) {// For when a player's renderList is desynced.
-			sendMessage(NetworkCodes.RENDERSYNC+serverTick,client.IP,client.port);
-		for (int i = 0; i < Render.renderList.size(); i++) {
-			ClientSprite sprite = Render.renderList.get(i);
-			sendMessage(NetworkCodes.NEWSPRITE + getSpriteData(sprite), client.IP, client.port);
-		}
-
 	}
 
 	public void doExplosion(float x, float y) {
