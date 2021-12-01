@@ -31,7 +31,6 @@ public class Cannon extends Attachable {
 
 	public void update() {
 		time += Config.delta;
-		
 		for (int i = 0; i < projectiles.size(); i++) {
 			if (!projectiles.get(i).isExploded()) {
 				projectiles.get(i).doMovement();
